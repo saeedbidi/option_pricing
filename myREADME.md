@@ -1,4 +1,4 @@
-# **Black-Scholes Option Pricing Model with Monte Carlo and Binomial Tree Methods**
+# **Option Pricing Model with Black-Scholes, Monte Carlo and Binomial Tree Methods**
 
 This project implements the **Black-Scholes model** for pricing European call and put options, along with additional functionality for **Monte Carlo simulations** and the **Binomial Tree method**. Real-world stock data is fetched via the **Yahoo Finance API** to compute option prices, historical volatility, and option sensitivities (the Greeks). The project also provides visualizations and comparisons of option prices using all three methods.
 
