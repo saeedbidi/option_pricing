@@ -18,6 +18,15 @@ The **Black-Scholes model**, **Monte Carlo simulations**, and the **Binomial Tre
 - Provides visualisations showing how option prices vary with stock price for **both calls and puts**.
 - **Compares** pricing results from the three methods.
 
+### **Inputs**
+
+1. **Stock Ticker**
+2. **Stock Price (S)**
+3. **Strike Price (K)**
+4. **Days to Expiration**
+5. **Risk-Free Rate (r)**
+6. **Market Price of the Option**
+
 ### **Outputs**
 1. **Call and Put Option Prices** using the three pricing methods.
 2. **Greeks** for the call and put options.
@@ -28,28 +37,36 @@ The **Black-Scholes model**, **Monte Carlo simulations**, and the **Binomial Tre
 ### **Sample Output**
 
 ```
-Option Pricing Results:
+Options Pricing and Greeks Calculation Report:
 ----------------------------------
-Method: Black-Scholes
-Call Option Price: 6.50
-Put Option Price: 4.30
 
-Method: Monte Carlo (100,000 simulations)
-Call Option Price: 6.48
-Put Option Price: 4.33
+1. User Inputs:
+- Stock Ticker: AAPL
+- Stock Price (S): 191.8
+- Strike Price (K): 207.5
+- Days to Expiration: 7 days
+- Risk-Free Rate (r): 5.00%
+- Market Price of the Option: 22.25
 
-Method: Binomial Tree (500 steps)
-Call Option Price: 6.52
-Put Option Price: 4.31
+2. Calculated Intermediate Values:
+- Time to Maturity (T): 0.0192 years
+- Historical Volatility (σ): 19.95%
 
-Greeks (Black-Scholes):
-Delta: 0.63
-Gamma: 0.05
-Vega: 0.12
-Theta: -0.02
-Rho: 0.25
+3. Option Prices:
+- Option Price (Black-Scholes): 15.50
+- Option Price (Monte Carlo): 15.46
+- Option Price (Binomial Tree): 15.50
 
-Implied Volatility: 21.45%
+4. Greeks:
+- Delta: -0.9974
+- Gamma: 0.0015
+- Vega: 0.2113
+- Theta: 9.2415
+- Rho: -3.9663
+
+5. Implied Volatility Calculation:
+- Implied Volatility (IV): 118.69%
+    
 ```
 
 ## **Project Structure**
