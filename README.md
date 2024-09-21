@@ -150,27 +150,26 @@ S_{t+1} = S_t \cdot \exp \left( (r - 0.5 \cdot \sigma^2) \cdot \Delta t + \sigma
 ```
 
 where:
-- \( S_t \) is the stock price at time \( t \).
-- $S_t$
-- \( r \) is the risk-free interest rate.
-- \( \sigma \) is the volatility of the stock.
-- \( \Delta t \) is the time increment (daily or another small step).
-- \( Z \) is a random variable from a standard normal distribution (representing the random walk).
+- $S_t$ is the stock price at time $t$.
+- $r$ is the risk-free interest rate.
+- $\sigma$ is the volatility of the stock.
+- $\Delta t$ is the time increment (daily or another small step).
+- $Z$ is a random variable from a standard normal distribution (representing the random walk).
 
 For each simulation:
 1. Simulate the stock price over time using the GBM formula.
 2. Calculate the option **payoff** at maturity:
-   - **Call Option**: \( \max(0, S_T - K) \)
-   - **Put Option**: \( \max(0, K - S_T) \)
+   - **Call Option**: $\max(0, S_T - K)$
+   - **Put Option**: $\max(0, K - S_T)$,
 
-Where \( S_T \) is the simulated stock price at maturity and \( K \) is the strike price.
+where $S_T$ is the simulated stock price at maturity and $K$ is the strike price.
 
 3. Discount the payoff back to present value using the risk-free rate:
-\[
-\text{Option Price} = \exp(-r \cdot T) \cdot \text{Average Payoff}
-\]
+```math
+\text{Option Price} = \exp(-r \cdot T) \cdot \text{Average Payoff},
+```
 
-Where \( T \) is the time to expiration in years.
+where $T$ is the time to expiration in years.
 
 This approach is flexible and can handle a wide variety of option types, but it requires many simulations for accuracy.
 
@@ -184,11 +183,11 @@ The Binomial Tree method approximates option prices by constructing a tree of po
 3. Compute option prices by working backwards using risk-neutral probabilities.
 
 ### **Greeks Explanation**
-- **Delta (Δ)**: Sensitivity of the option price to changes in the underlying stock price.
-- **Gamma (Γ)**: Rate of change of delta with respect to the underlying stock price.
-- **Vega (ν)**: Sensitivity of the option price to changes in volatility.
-- **Theta (Θ)**: Sensitivity of the option price to time decay.
-- **Rho (ρ)**: Sensitivity of the option price to changes in the risk-free interest rate.
+- **$\Delta$**: Sensitivity of the option price to changes in the underlying stock price.
+- **$\Gamma$**: Rate of change of delta with respect to the underlying stock price.
+- **$\nu$**: Sensitivity of the option price to changes in volatility.
+- **$\Theta$**: Sensitivity of the option price to time decay.
+- **$\rho$**: Sensitivity of the option price to changes in the risk-free interest rate.
 
 ### **Implied Volatility Calculation**
 Implied volatility is derived from the Black-Scholes model to match the market price of an option, solved iteratively using **Brent's method**.
