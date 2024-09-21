@@ -124,31 +124,34 @@ The **Black-Scholes model** offers a closed-form solution for pricing European-s
 #### **Formula**
 For call options:
 ```math
-C = S \cdot N(d_1) - K \cdot e^{-rT} \cdot N(d_2)
+C = S \cdot N(d_1) - K \cdot e^{-rT} \cdot N(d_2).
 ```
-For put options:
-\[ P = K \cdot e^{-rT} \cdot N(-d_2) - S \cdot N(-d_1) \]
 
-**The Cauchy-Schwarz Inequality**
+For put options:
+```math
+P = K \cdot e^{-rT} \cdot N(-d_2) - S \cdot N(-d_1),
+```
+where:
 
 ```math
-\left( \sum_{k=1}^n a_k b_k \right)^2 \leq \left( \sum_{k=1}^n a_k^2 \right) \left( \sum_{k=1}^n b_k^2 \right)
+d_1 = \frac{\ln(S/K) + (r + \sigma^2/2)T}{\sigma \sqrt{T}}, 
 ```
 
-Where:
-\[ d_1 = \frac{\ln(S/K) + (r + \sigma^2/2)T}{\sigma \sqrt{T}} \]
-\[ d_2 = d_1 - \sigma \sqrt{T} \]
+```math
+ d_2 = d_1 - \sigma \sqrt{T}.
+```
 
 ### **2. Monte Carlo Simulations**
 
 Monte Carlo simulation is used to estimate the price of options by simulating the future stock price paths and calculating the corresponding option payoffs. The method relies on **Geometric Brownian Motion (GBM)**, which models stock price evolution as:
 
-\[
-S_{t+1} = S_t \cdot \exp \left( (r - 0.5 \cdot \sigma^2) \cdot \Delta t + \sigma \cdot \sqrt{\Delta t} \cdot Z \right)
-\]
+```math
+S_{t+1} = S_t \cdot \exp \left( (r - 0.5 \cdot \sigma^2) \cdot \Delta t + \sigma \cdot \sqrt{\Delta t} \cdot Z \right),
+```
 
-Where:
+where:
 - \( S_t \) is the stock price at time \( t \).
+- $S_t$
 - \( r \) is the risk-free interest rate.
 - \( \sigma \) is the volatility of the stock.
 - \( \Delta t \) is the time increment (daily or another small step).
