@@ -123,8 +123,9 @@ The **Black-Scholes model** offers a closed-form solution for pricing European-s
 
 #### **Formula**
 For call options:
-$$ C = S \cdot N(d_1) - K \cdot e^{-rT} \cdot N(d_2) $$
-
+```math
+C = S \cdot N(d_1) - K \cdot e^{-rT} \cdot N(d_2)
+```
 For put options:
 \[ P = K \cdot e^{-rT} \cdot N(-d_2) - S \cdot N(-d_1) \]
 
