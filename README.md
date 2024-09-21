@@ -128,6 +128,12 @@ $$ C = S \cdot N(d_1) - K \cdot e^{-rT} \cdot N(d_2) $$
 For put options:
 \[ P = K \cdot e^{-rT} \cdot N(-d_2) - S \cdot N(-d_1) \]
 
+**The Cauchy-Schwarz Inequality**
+
+```math
+\left( \sum_{k=1}^n a_k b_k \right)^2 \leq \left( \sum_{k=1}^n a_k^2 \right) \left( \sum_{k=1}^n b_k^2 \right)
+```
+
 Where:
 \[ d_1 = \frac{\ln(S/K) + (r + \sigma^2/2)T}{\sigma \sqrt{T}} \]
 \[ d_2 = d_1 - \sigma \sqrt{T} \]
