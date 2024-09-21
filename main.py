@@ -51,7 +51,6 @@ def monte_carlo_option_price(S, K, T, r, sigma, num_simulations=10000):
     
     dt = 1 / 365  # Daily steps
     num_steps = int(T * 365)  # Number of days until maturity
-    print('saeed',num_steps,T,dt)
     payoffs = [] # This list will store the payoff from each simulation, which will later be averaged to determine the option price.
     paths = []  # To store all paths
     for _ in range(num_simulations):
