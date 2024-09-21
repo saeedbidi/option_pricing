@@ -1,6 +1,6 @@
 # **Option Pricing Model with Black-Scholes, Monte Carlo and Binomial Tree Methods**
 
-This project implements the **Black-Scholes model** for pricing European call and put options, along with additional functionality for **Monte Carlo simulations** and the **Binomial Tree method**. Real-world stock data is fetched via the **Yahoo Finance API** to compute option prices, historical volatility, and option sensitivities (the Greeks). The project also provides visualizations and comparisons of option prices using all three methods.
+This project implements the **Black-Scholes model**, **Monte Carlo simulations** and the **Binomial Tree method** for pricing European call and put options. Real-world stock data is fetched via the **Yahoo Finance API** to compute option prices, historical volatility, and option sensitivities (the Greeks). The project also provides visualisations and comparisons of option prices using all three methods.
 
 ## **Project Overview**
 
@@ -15,8 +15,8 @@ The **Black-Scholes model**, **Monte Carlo simulations**, and the **Binomial Tre
 - Calculates **historical volatility** based on daily returns.
 - Computes the **Greeks**: **Delta**, **Gamma**, **Vega**, **Theta**, and **Rho**.
 - Calculates **Implied Volatility** based on market prices.
-- Provides visualizations showing how option prices vary with stock price for both calls and puts.
-- Compares pricing results from the three methods.
+- Provides visualisations showing how option prices vary with stock price for **both calls and puts**.
+- **Compares** pricing results from the three methods.
 
 ### **Outputs**
 1. **Call and Put Option Prices** using the three pricing methods.
@@ -24,41 +24,6 @@ The **Black-Scholes model**, **Monte Carlo simulations**, and the **Binomial Tre
 3. **Implied Volatility** of the option.
 4. **Plots** illustrating price changes with respect to the underlying stock price.
 5. **Comparison** of option prices from all three methods.
-
-## **Installation**
-
-To run this project, install the following Python libraries:
-
-```bash
-pip install numpy scipy yfinance matplotlib
-```
-
-## **How to Run the Project**
-
-1. Clone the repository or download the Python script.
-2. Install the required dependencies listed above.
-3. Execute the script in your preferred Python environment (e.g., Jupyter Notebook, VS Code, or command line):
-
-```bash
-python option_pricing_project.py
-```
-
-### **Example Output**
-The script will generate the following output:
-- **Call and Put Option Prices** using **Black-Scholes**, **Monte Carlo**, and **Binomial Tree** methods.
-- The computed **Greeks** and **implied volatility**.
-- Two plots:
-  - **Call Option Price vs. Stock Price**
-  - **Put Option Price vs. Stock Price**
-
-### **Parameters**
-You can modify the following parameters in the script:
-- **`ticker`**: Ticker symbol of the stock (e.g., `AAPL` for Apple).
-- **`K`**: Strike price of the option.
-- **`T`**: Time to maturity in years.
-- **`r`**: Risk-free rate (annualized).
-- **`n_simulations`**: Number of simulations for the Monte Carlo method.
-- **`n_steps`**: Number of steps in the Binomial Tree method.
 
 ### **Sample Output**
 
@@ -87,6 +52,50 @@ Rho: 0.25
 Implied Volatility: 21.45%
 ```
 
+## **Project Structure**
+
+```
+.
+├── main.py        # Main Python script for the project
+├── setup.py        # Setup Python script to install the required libraries
+├── README.md                        # This README file
+├── output                       # Output folder containing the reports and plots
+```
+
+## **Customisation**
+You can customise this project by:
+- Changing the **stock ticker** (e.g., from `AAPL` to `MSFT`).
+- Modifying the **strike price**, **risk-free rate**, **time to maturity**, or **volatility**.
+- Adjusting the number of **simulations** for the Monte Carlo method or the number of **steps** for the Binomial Tree method.
+
+
+## **How to Run the Project**
+
+1. Clone the repository.
+2. Install the following Python setup file including the necessary libraries:
+
+```bash
+python setup.py install
+```
+3. Execute the Python code `main.py` or the Jupyter Notebook script `main.ipynb`.
+
+
+### **Example Output**
+The script will generate the following output:
+- **Call and Put Option Prices** using **Black-Scholes**, **Monte Carlo**, and **Binomial Tree** methods.
+- The computed **Greeks** and **implied volatility**.
+- **Option Price (call or put) vs. Stock Price** plots:
+
+### **Parameters**
+You can modify the following parameters in the script:
+- **`ticker`**: Ticker symbol of the stock (e.g., `AAPL` for Apple).
+- **`K`**: Strike price of the option.
+- **`T`**: Time to maturity in years.
+- **`r`**: Risk-free rate (annualised).
+- **`n_simulations`**: Number of simulations for the Monte Carlo method.
+- **`n_steps`**: Number of steps in the Binomial Tree method.
+
+
 ### **Comparison**
 The script compares prices from the **Black-Scholes**, **Monte Carlo**, and **Binomial Tree** methods, showcasing their alignment or divergence under varying market conditions and parameters like volatility and time to maturity.
 
@@ -107,11 +116,6 @@ Where:
 \[ d_2 = d_1 - \sigma \sqrt{T} \]
 
 ### **2. Monte Carlo Simulations**
-Here's a concise explanation with equations for your README file:
-
----
-
-### **Monte Carlo Simulation for Option Pricing**
 
 Monte Carlo simulation is used to estimate the price of options by simulating the future stock price paths and calculating the corresponding option payoffs. The method relies on **Geometric Brownian Motion (GBM)**, which models stock price evolution as:
 
@@ -143,9 +147,6 @@ Where \( T \) is the time to expiration in years.
 
 This approach is flexible and can handle a wide variety of option types, but it requires many simulations for accuracy.
 
---- 
-
-This explanation should fit neatly into your README file.
 
 ### **3. Binomial Tree Method**
 The Binomial Tree method approximates option prices by constructing a tree of possible future stock prices, calculating option prices by working backwards from the terminal nodes.
@@ -155,42 +156,25 @@ The Binomial Tree method approximates option prices by constructing a tree of po
 2. Each interval allows the stock price to increase by a factor `u` or decrease by a factor `d`.
 3. Compute option prices by working backwards using risk-neutral probabilities.
 
-### **4. Greeks Explanation**
+### **Greeks Explanation**
 - **Delta (Δ)**: Sensitivity of the option price to changes in the underlying stock price.
 - **Gamma (Γ)**: Rate of change of delta with respect to the underlying stock price.
 - **Vega (ν)**: Sensitivity of the option price to changes in volatility.
 - **Theta (Θ)**: Sensitivity of the option price to time decay.
 - **Rho (ρ)**: Sensitivity of the option price to changes in the risk-free interest rate.
 
-### **5. Implied Volatility Calculation**
+### **Implied Volatility Calculation**
 Implied volatility is derived from the Black-Scholes model to match the market price of an option, solved iteratively using **Brent's method**.
 
-### **6. Comparison of Methods**
+### **Comparison of Methods**
 Both Monte Carlo and Binomial Tree methods provide alternative means to calculate option prices, especially for options with complex features.
 
-## **Project Structure**
-
-```
-.
-├── option_pricing_project.py        # Main Python script for the project
-├── README.md                        # This README file
-```
-
-## **Customization**
-You can customize this project by:
-- Changing the **stock ticker** (e.g., from `AAPL` to `MSFT`).
-- Modifying the **strike price**, **risk-free rate**, **time to maturity**, or **volatility**.
-- Adjusting the number of **simulations** for the Monte Carlo method or the number of **steps** for the Binomial Tree method.
 
 ## **References**
 - [Black-Scholes Model - Investopedia](https://www.investopedia.com/terms/b/blackscholes.asp)
-- [Monte Carlo Methods - Wikipedia](https://en.wikipedia.org/wiki/Monte_Carlo_method)
-- [Binomial Tree Model - Wikipedia](https://en.wikipedia.org/wiki/Binomial_options_pricing_model)
+- [Monte Carlo Methods - Investopedia](https://www.investopedia.com/terms/m/montecarlosimulation.asp)
+- [Binomial Tree Model - Investopedia](https://www.investopedia.com/terms/b/binomialoptionpricing.asp)
 - [Yahoo Finance API](https://pypi.org/project/yfinance/)
 
 ## **License**
 This project is open-source and available under the [MIT License](LICENSE).
-
----
-
-This revised `README.md` provides a clear, structured overview of the project, ensuring that users can easily understand and navigate through the information.
