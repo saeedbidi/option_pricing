@@ -1,8 +1,10 @@
-# **Option Pricing Model with Black-Scholes, Monte Carlo and Binomial Tree Methods**
+# **Project Overview**
+
+As a Senior Data Scientist with a PhD in Computational Physics, I have a strong foundation in analytical thinking and complex problem-solving. My current focus on finance projects stems from a deep passion for the field and a desire to apply my expertise to real-world financial challenges. Through hands-on work in finance, I am leveraging my data science skills to gain practical experience and build a robust understanding of financial systems.
 
 This project implements the **Black-Scholes model**, **Monte Carlo simulations** and the **Binomial Tree method** for pricing European call and put options. Real-world stock data is fetched via the **Yahoo Finance API** to compute option prices, historical volatility, and option sensitivities (the Greeks). The project also provides visualisations and comparisons of option prices using all three methods.
 
-## **Project Overview**
+## **Option Pricing Model with Black-Scholes, Monte Carlo and Binomial Tree Methods**
 
 The **Black-Scholes model**, **Monte Carlo simulations**, and the **Binomial Tree method** are vital tools in financial markets for pricing options. Each method offers a distinct approach to estimating the price of European-style options, relying on parameters such as stock price, strike price, time to maturity, risk-free rate, and volatility.
 
