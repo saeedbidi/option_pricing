@@ -3,7 +3,7 @@
 
         1. User Inputs:
         - Stock Ticker: BNTX
-        - Stock Price (S): 113.7
+        - Stock Price (S): 113.8
         - Strike Price (K): 105
         - Days to Expiration: 25 days
         - Risk-Free Rate (r): 5.00%
@@ -14,17 +14,17 @@
         - Historical Volatility (σ): 33.36%
 
         3. Option Prices:
-        - Option Price (Black-Scholes): 9.95
-        - Option Price (Monte Carlo): 10.01
-        - Option Price (Binomial Tree): 9.95
+        - Option Price (Black-Scholes): 10.01
+        - Option Price (Monte Carlo): 9.96
+        - Option Price (Binomial Tree): 10.02
 
         4. Greeks:
-        - Delta: 0.8405
-        - Gamma: 0.0245
-        - Vega: 7.2253
-        - Theta: -21.8770
-        - Rho: 5.8658
+        - Delta: 0.8425
+        - Gamma: 0.0242
+        - Vega: 7.1724
+        - Theta: -21.7591
+        - Rho: 5.8810
 
         5. Implied Volatility Calculation:
-        - Implied Volatility (IV): 28.17%
+        - Implied Volatility (IV): 26.95%
         
