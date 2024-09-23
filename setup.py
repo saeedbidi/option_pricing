@@ -9,9 +9,9 @@ setup(
     packages=find_namespace_packages(),
     include_package_data=True,
     # url="https://github.com/",
-    description="pricing European call and put options using the Black-Scholes model",
+    description="pricing European call and put options using various models",
     author="Saeed Bidi",
     author_email="saeed.bidi@qmul.ac.uk",
     python_requires=">=3.8",
-    install_requires=["numpy", "yfinance", "scipy", "matplotlib"],
+    install_requires=["numpy", "yfinance", "scipy", "matplotlib", "streamlit"],
 )
