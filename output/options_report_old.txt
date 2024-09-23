@@ -15,14 +15,14 @@
 
     3. Option Prices:
     - Option Price (Black-Scholes): 15.50
-    - Option Price (Monte Carlo): 15.46
+    - Option Price (Monte Carlo): 15.49
     - Option Price (Binomial Tree): 15.50
 
     4. Greeks:
     - Delta: -0.9974
     - Gamma: 0.0015
     - Vega: 0.2113
-    - Theta: 9.2415
+    - Theta: 9.2414
     - Rho: -3.9663
 
     5. Implied Volatility Calculation:
