@@ -2,3 +2,5 @@ myenv/
 build/
 Extra-inf.md
 old/
+__pycache__
+backtest_data/
