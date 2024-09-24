@@ -2,29 +2,29 @@
         Options Pricing and Greeks Calculation Report
 
         1. User Inputs:
-        - Stock Ticker: BNTX
-        - Stock Price (S): 113.7
-        - Strike Price (K): 105
-        - Days to Expiration: 25 days
+        - Stock Ticker: AAPL
+        - Stock Price (S): 226.5
+        - Strike Price (K): 207.5
+        - Days to Expiration: 7 days
         - Risk-Free Rate (r): 5.00%
-        - Market Price of the Option: 9.6
+        - Market Price of the Option: 22.25
 
         2. Calculated Intermediate Values:
-        - Time to Maturity (T): 0.0685 years
-        - Historical Volatility (σ): 33.36%
+        - Time to Maturity (T): 0.0192 years
+        - Historical Volatility (σ): 21.91%
 
         3. Option Prices:
-        - Option Price (Black-Scholes): 9.95
-        - Option Price (Monte Carlo): 10.01
-        - Option Price (Binomial Tree): 9.95
+        - Option Price (Black-Scholes): 19.17
+        - Option Price (Monte Carlo): 19.24
+        - Option Price (Binomial Tree): 19.17
 
         4. Greeks:
-        - Delta: 0.8405
-        - Gamma: 0.0245
-        - Vega: 7.2253
-        - Theta: -21.8770
-        - Rho: 5.8658
+        - Delta: 0.9983
+        - Gamma: 0.0008
+        - Vega: 0.1710
+        - Theta: -11.3226
+        - Rho: 3.9682
 
         5. Implied Volatility Calculation:
-        - Implied Volatility (IV): 28.17%
+        - Implied Volatility (IV): 82.16%
         
