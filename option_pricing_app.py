@@ -1,47 +1,92 @@
 import streamlit as st
-
-st.title("Hello, Streamlit!")
-st.write("This is a test to see if Streamlit is running correctly.")
-
-# import streamlit as st
 import numpy as np
 import yfinance as yf
-from scipy.stats import norm
-from option_pricing import OptionPricing  # Import your class here
+from datetime import datetime
+import os
+import matplotlib.pyplot as plt
+from option_pricing import OptionPricing  # Assuming your class is in option_pricing.py
 
-# Title of the app
-st.title("Option Pricing Calculator")
 
-# User inputs
-ticker = st.text_input("Stock Ticker:", "AAPL")
-option_type = st.selectbox("Option Type:", ["call", "put"])
-strike_price = st.number_input("Strike Price:", value=207.5)
-days_to_maturity = st.number_input("Days to Maturity:", value=7, min_value=1)
-risk_free_rate = st.number_input("Risk-Free Rate (as a decimal):", value=0.05)
-market_price = st.number_input("Market Price of the Option:", value=22.25)
+# Streamlit app
+def app():
+    st.title("Option Pricing Models")
 
-# Button to calculate option price
-if st.button("Calculate"):
-    option = OptionPricing(ticker, option_type)
-    option.get_stock_data()
-    historical_vol = option.calculate_historical_volatility()
-    S = option.S
-    T = days_to_maturity / 365
+    # Input fields
+    ticker = st.text_input("Enter stock ticker:", "AAPL")
+    option_type = st.radio("Select option type:", ["Call", "Put"])
+    K = st.number_input("Enter strike price (K):", value=207.5)
+    days_to_maturity = st.number_input("Days to expiration:", value=7)
+    T = days_to_maturity / 365  # Time to maturity (in years)
+    r = st.number_input("Enter risk-free rate (r):", value=0.05)
+    market_price = st.number_input("Enter market price of the option:", value=22.25)
 
-    # Calculate option prices
-    bs_price = option.black_scholes_option(S, strike_price, T, risk_free_rate, historical_vol)
-    mc_price = option.monte_carlo_option_price(S, strike_price, T, risk_free_rate, historical_vol)
-    bt_price = option.binomial_tree_option_price(S, strike_price, T, risk_free_rate, historical_vol, N=100)
+    # ticker = st.text_input("Enter stock ticker:", "TSLA")
+    # option_type = st.radio("Select option type:", ["Call", "Put"])
+    # K = st.number_input("Enter strike price (K):", value=225)
+    # days_to_maturity = st.number_input("Days to expiration:", value=25)
+    # T = days_to_maturity / 365  # Time to maturity (in years)
+    # r = st.number_input("Enter risk-free rate (r):", value=0.05)
+    # market_price = st.number_input("Enter market price of the option:", value=30.8)
 
-    # Display results
-    st.write(f"Black-Scholes Price: {bs_price:.2f}")
-    st.write(f"Monte Carlo Price: {mc_price:.2f}")
-    st.write(f"Binomial Tree Price: {bt_price:.2f}")
+    # Date inputs for historical volatility calculation
+    start_date = st.date_input("Select start date for historical data:", datetime(2023, 1, 1))
+    end_date = st.date_input("Select end date for historical data:", datetime.today())
 
-    # Option Greeks
-    delta, gamma, vega, theta, rho = option.greeks(S, strike_price, T, risk_free_rate, historical_vol)
-    st.write(f"Greeks: Delta={delta:.4f}, Gamma={gamma:.4f}, Vega={vega:.4f}, Theta={theta:.4f}, Rho={rho:.4f}")
+    # Initialize the OptionPricing class
+    option_pricing = OptionPricing(ticker, option_type.lower())  # Pass the type as lowercase
 
-    # Implied Volatility
-    implied_vol = option.implied_volatility_newton(S, strike_price, T, risk_free_rate, market_price)
-    st.write(f"Implied Volatility: {implied_vol:.2f}")
+    # Calculate historical volatility
+    sigma = option_pricing.calculate_historical_volatility(start_date.strftime('%Y-%m-%d'), 
+                                                             end_date.strftime('%Y-%m-%d'))
+
+    # Button to calculate all results
+    if st.button("Calculate All Results"):
+        # Fetch the current stock price
+        option_pricing.get_stock_data()
+        if option_pricing.S:
+            st.success(f"Current Stock Price (S): {option_pricing.S:.2f}")
+            option_pricing.output_folder = "output_streamlit"
+            os.makedirs(option_pricing.output_folder, exist_ok=True)
+            # Calculate prices using different models
+            bs_price = option_pricing.black_scholes_option(option_pricing.S, K, T, r, sigma)
+            mc_price = option_pricing.monte_carlo_option_price(option_pricing.S, K, T, r, sigma, num_simulations=10000)
+            bt_price = option_pricing.binomial_tree_option_price(option_pricing.S, K, T, r, sigma, N=100)
+
+            st.success(f"Black-Scholes Price: {bs_price:.2f}")
+            st.success(f"Monte Carlo Price: {mc_price[0]:.2f}")
+            st.success(f"Binomial Tree Price: {bt_price:.2f}")
+
+            # Generate comparative pricing plot
+            option_pricing.comparative_pricing_plot(bs_price, mc_price, bt_price)
+            # Ensure the output folder exists
+            # Plot option prices vs stock price
+            S_range = np.linspace(option_pricing.S * 0.8, option_pricing.S * 1.2, 100)
+            K_list = [K, K * 1.1, K * 0.9]
+            option_pricing.plot_option_price_vs_stock_price(S_range, K_list, T, r, sigma)
+
+            # Calculate implied volatility
+            iv = option_pricing.implied_volatility(option_pricing.S, K, T, r, market_price)
+            if iv is not None:
+                st.success(f"Implied Volatility: {iv:.2%}")
+            else:
+                st.error("Could not calculate implied volatility.")
+
+            # Display plots
+            if os.path.exists(os.path.join(option_pricing.output_folder, 'Pricing_Comparison.png')):
+                st.image(os.path.join(option_pricing.output_folder, 'Pricing_Comparison.png'), caption='Option Pricing: Black-Scholes vs Monte Carlo vs Binomial Tree')
+            if os.path.exists(os.path.join(option_pricing.output_folder, 'Convergence_Plot.png')):
+                st.image(os.path.join(option_pricing.output_folder, 'Option_price_vs_stock_price.png'), caption='Option Price vs Stock Price')
+            if os.path.exists(os.path.join(option_pricing.output_folder, 'Monte_Carlo_Paths.png')):
+                st.image(os.path.join(option_pricing.output_folder, 'Monte_Carlo_Paths.png'), caption='Monte Carlo Simulation Paths')
+            if os.path.exists(os.path.join(option_pricing.output_folder, 'Payoff_Histogram.png')):
+                st.image(os.path.join(option_pricing.output_folder, 'Payoff_Histogram.png'), caption='Histogram of Simulated Payoffs')
+            if os.path.exists(os.path.join(option_pricing.output_folder, 'Convergence_Plot.png')):
+                st.image(os.path.join(option_pricing.output_folder, 'Convergence_Plot.png'), caption='Convergence of Monte Carlo Option Price')
+
+
+        else:
+            st.error("Error fetching stock price.")
+
+# Streamlit call
+if __name__ == "__main__":
+    app()
