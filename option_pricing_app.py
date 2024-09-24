@@ -4,7 +4,7 @@ import yfinance as yf
 from datetime import datetime
 import os
 import matplotlib.pyplot as plt
-from option_pricing import OptionPricing  # Assuming your class is in option_pricing.py
+from option_pricing import OptionPricing 
 
 
 # Streamlit app
@@ -20,6 +20,9 @@ def app():
     r = st.number_input("Enter risk-free rate (r):", value=0.05)
     market_price = st.number_input("Enter market price of the option:", value=22.25)
 
+    num_simulations = st.number_input("Number of simulations for Monte Carlo method (e.g., 100000):", value=10000)
+    N = st.number_input("Number of steps for Binomial Tree method (e.g., 100):", value=100)
+
     # ticker = st.text_input("Enter stock ticker:", "TSLA")
     # option_type = st.radio("Select option type:", ["Call", "Put"])
     # K = st.number_input("Enter strike price (K):", value=225)
@@ -32,7 +35,7 @@ def app():
     start_date = st.date_input("Select start date for historical data:", datetime(2023, 1, 1))
     end_date = st.date_input("Select end date for historical data:", datetime.today())
 
-    # Initialize the OptionPricing class
+    # Initialise the OptionPricing class
     option_pricing = OptionPricing(ticker, option_type.lower())  # Pass the type as lowercase
 
     # Calculate historical volatility
@@ -49,8 +52,8 @@ def app():
             os.makedirs(option_pricing.output_folder, exist_ok=True)
             # Calculate prices using different models
             bs_price = option_pricing.black_scholes_option(option_pricing.S, K, T, r, sigma)
-            mc_price = option_pricing.monte_carlo_option_price(option_pricing.S, K, T, r, sigma, num_simulations=10000)
-            bt_price = option_pricing.binomial_tree_option_price(option_pricing.S, K, T, r, sigma, N=100)
+            mc_price = option_pricing.monte_carlo_option_price(option_pricing.S, K, T, r, sigma, num_simulations)
+            bt_price = option_pricing.binomial_tree_option_price(option_pricing.S, K, T, r, sigma, N)
 
             st.success(f"Black-Scholes Price: {bs_price:.2f}")
             st.success(f"Monte Carlo Price: {mc_price[0]:.2f}")
