@@ -1,10 +1,11 @@
 # **Project Overview**
 
-## Note:
+## Quick Note:
 
-🚀 I am excited to share my project focusing on This project implements the **Black-Scholes model**, **Monte Carlo simulations** and the **Binomial Tree method** for pricing European call and put options. I am developing the project further by adding backtesting, a machine learning model, and deploying the app.
 
-🎉 I believe in hands on learning. As a Senior Data Scientist with a PhD in Computational Physics, I have a strong foundation in analytical thinking and complex problem-solving. Through hands-on work in Finance, I am leveraging my data science skills to gain practical experience and build a robust understanding of financial systems.
+🚀 I am excited to share my project focusing on pricing options. I implemented the **Black-Scholes model**, **Monte Carlo simulations**, and the **Binomial Tree method** for pricing European call and put options. I am further developing the project by adding backtesting, a machine learning model, and deploying the app.
+
+🎉 I believe in hands-on learning. As a Senior Data Scientist with a PhD in Computational Physics, I have a strong foundation in analytical thinking and complex problem-solving. Through hands-on work in finance, I am leveraging my data science skills to gain practical experience and build a robust understanding of financial systems.
 
 🛠️ Real-world stock data is fetched via the **Yahoo Finance API** to compute option prices, historical volatility, and option sensitivities (the Greeks). The project also provides visualisations and comparisons of option prices using all three methods.
 
