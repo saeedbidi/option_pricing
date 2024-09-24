@@ -1,0 +1,5 @@
+numpy
+yfinance
+scipy
+matplotlib
+streamlit
