@@ -138,7 +138,7 @@ You can modify the following parameters in the script:
 ##  📖 **Code Explanation**
 
 ### **1. Black-Scholes Model**
-The **Black-Scholes model** offers a closed-form solution for pricing European-style options, based on the assumption that stock prices follow a geometric Brownian motion.
+The **Black-Scholes model** gives a closed-form solution for pricing European-style options, based on the assumption that stock prices follow a geometric Brownian motion.
 
 #### **Formula**
 For call options:
