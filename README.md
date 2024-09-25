@@ -1,9 +1,12 @@
 # **Project Overview**
 
+
 ## Quick Note:
 
+📢 This app is now released and deployed at: https://saeed-option-pricing.streamlit.app/
 
-🚀 I am excited to share my project focusing on pricing options. I implemented the **Black-Scholes model**, **Monte Carlo simulations**, and the **Binomial Tree method** for pricing European call and put options. I am further developing the project by adding backtesting, a machine learning model, and deploying the app.
+
+🚀 I am excited to share my project focusing on pricing options. I implemented the **Black-Scholes model**, **Monte Carlo simulations**, and the **Binomial Tree method** for pricing options. I am further developing the project by adding backtesting, a machine learning model, and deploying the app.
 
 🎉 I believe in hands-on learning. As a Senior Data Scientist with a PhD in Computational Physics, I have a strong foundation in analytical thinking and complex problem-solving. Through hands-on work in finance, I am leveraging my data science skills to gain practical experience and build a robust understanding of financial systems.
 
@@ -12,11 +15,11 @@
 
 ##  💰 **Option Pricing Model with Black-Scholes, Monte Carlo and Binomial Tree Methods**
 
-The **Black-Scholes model**, **Monte Carlo simulations**, and the **Binomial Tree method** are vital tools in financial markets for pricing options. Each method offers a distinct approach to estimating the price of European-style options, relying on parameters such as stock price, strike price, time to maturity, risk-free rate, and volatility.
+The **Black-Scholes model**, **Monte Carlo simulations**, and the **Binomial Tree method** are vital tools in financial markets for pricing options. Each method offers a distinct approach to estimating the price of call and put options, relying on parameters such as stock price, strike price, time to maturity, risk-free rate, and volatility.
 
 ### **Features**
 - Fetches **real-time stock data** (e.g., Apple stock) using `yfinance`.
-- Computes option prices for **European call and put options** using:
+- Computes option prices for **call and put options** using:
   - **Black-Scholes**
   - **Monte Carlo**
   - **Binomial Tree**
@@ -139,7 +142,7 @@ You can modify the following parameters in the script:
 ##  📖 **Code Explanation**
 
 ### **1. Black-Scholes Model**
-The **Black-Scholes model** gives a closed-form solution for pricing European-style options, based on the assumption that stock prices follow a geometric Brownian motion.
+The **Black-Scholes model** gives a closed-form solution for pricing call and put options, based on the assumption that stock prices follow a geometric Brownian motion.
 
 #### **Formula**
 For call options:
