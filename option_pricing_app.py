@@ -50,39 +50,39 @@ def app():
 
 
     # Layout 1
-    # col1, col2, col3 = st.columns(3)
-    # with col1:
-    #     ticker = st.text_input("Stock ticker:", "AAPL")
-    #     option_type = st.radio("Option type:", ["Call", "Put"])
-
-    # with col2:
-    #     K = st.number_input("Strike price (K):", value=207.5)
-    #     days_to_maturity = st.number_input("Days to expiration:", value=7)
-    #     T = days_to_maturity / 365
-    #     r = st.number_input("Risk-free rate (r):", value=0.05)
-    #     market_price = st.number_input("Market price of the option:", value=22.25)
-      
-
-    # with col3:
-    #     num_simulations = st.number_input("Monte Carlo runs (e.g., 100000):", value=10000)
-    #     N = st.number_input("Binomial Tree steps (e.g., 100):", value=100)
-    #     # Date inputs for historical volatility calculation
-    #     start_date = st.date_input("Select start date for historical data:", datetime(2023, 1, 1))
-    #     end_date = st.date_input("Select end date for historical data:", datetime.today())
-
-    # Layout 2
-    with st.sidebar:
-        st.header("Option Pricing Inputs")
+    col1, col2, col3 = st.columns(3)
+    with col1:
         ticker = st.text_input("Stock ticker:", "AAPL")
         option_type = st.radio("Option type:", ["Call", "Put"])
+
+    with col2:
         K = st.number_input("Strike price (K):", value=207.5)
         days_to_maturity = st.number_input("Days to expiration:", value=7)
+        T = days_to_maturity / 365
         r = st.number_input("Risk-free rate (r):", value=0.05)
         market_price = st.number_input("Market price of the option:", value=22.25)
+      
+
+    with col3:
         num_simulations = st.number_input("Monte Carlo runs (e.g., 100000):", value=10000)
         N = st.number_input("Binomial Tree steps (e.g., 100):", value=100)
+        # Date inputs for historical volatility calculation
         start_date = st.date_input("Select start date for historical data:", datetime(2023, 1, 1))
         end_date = st.date_input("Select end date for historical data:", datetime.today())
+
+    # Layout 2
+    # with st.sidebar:
+    #     st.header("Option Pricing Inputs")
+    #     ticker = st.text_input("Stock ticker:", "AAPL")
+    #     option_type = st.radio("Option type:", ["Call", "Put"])
+    #     K = st.number_input("Strike price (K):", value=207.5)
+    #     days_to_maturity = st.number_input("Days to expiration:", value=7)
+    #     r = st.number_input("Risk-free rate (r):", value=0.05)
+    #     market_price = st.number_input("Market price of the option:", value=22.25)
+    #     num_simulations = st.number_input("Monte Carlo runs (e.g., 100000):", value=10000)
+    #     N = st.number_input("Binomial Tree steps (e.g., 100):", value=100)
+    #     start_date = st.date_input("Select start date for historical data:", datetime(2023, 1, 1))
+    #     end_date = st.date_input("Select end date for historical data:", datetime.today())
     
     T = days_to_maturity / 365
 
