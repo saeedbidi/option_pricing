@@ -11,6 +11,15 @@ from option_pricing import OptionPricing
 def app():
     st.title("Option Pricing Models by Dr. Saeed Bidi")
 
+    # Description of the app and models
+    st.markdown("""
+    Welcome to the **Option Pricing Models** app. This tool allows you to calculate option prices 
+    using various financial models such as the Black-Scholes model, Monte Carlo simulations, and Binomial Tree models.
+    
+    You can enter key inputs like the stock ticker, strike price, risk-free rate, and time to maturity. 
+    The app will also calculate implied volatility and provide you with a comparison between different pricing methods.
+    """)
+
     # Input fields
     ticker = st.text_input("Enter stock ticker:", "AAPL")
     option_type = st.radio("Select option type:", ["Call", "Put"])
@@ -22,14 +31,6 @@ def app():
 
     num_simulations = st.number_input("Number of simulations for Monte Carlo method (e.g., 100000):", value=10000)
     N = st.number_input("Number of steps for Binomial Tree method (e.g., 100):", value=100)
-
-    # ticker = st.text_input("Enter stock ticker:", "TSLA")
-    # option_type = st.radio("Select option type:", ["Call", "Put"])
-    # K = st.number_input("Enter strike price (K):", value=225)
-    # days_to_maturity = st.number_input("Days to expiration:", value=25)
-    # T = days_to_maturity / 365  # Time to maturity (in years)
-    # r = st.number_input("Enter risk-free rate (r):", value=0.05)
-    # market_price = st.number_input("Enter market price of the option:", value=30.8)
 
     # Date inputs for historical volatility calculation
     start_date = st.date_input("Select start date for historical data:", datetime(2023, 1, 1))
@@ -44,12 +45,15 @@ def app():
 
     # Button to calculate all results
     if st.button("Calculate All Results"):
+        st.info("Fetching stock data and performing calculations, this might take a few moments...")
+        
         # Fetch the current stock price
         option_pricing.get_stock_data()
         if option_pricing.S:
             st.success(f"Current Stock Price (S): {option_pricing.S:.2f}")
             option_pricing.output_folder = "output_streamlit"
             os.makedirs(option_pricing.output_folder, exist_ok=True)
+            
             # Calculate prices using different models
             bs_price = option_pricing.black_scholes_option(option_pricing.S, K, T, r, sigma)
             mc_price = option_pricing.monte_carlo_option_price(option_pricing.S, K, T, r, sigma, num_simulations)
@@ -61,7 +65,7 @@ def app():
 
             # Generate comparative pricing plot
             option_pricing.comparative_pricing_plot(bs_price, mc_price, bt_price)
-            # Ensure the output folder exists
+
             # Plot option prices vs stock price
             S_range = np.linspace(option_pricing.S * 0.8, option_pricing.S * 1.2, 100)
             K_list = [K, K * 1.1, K * 0.9]
@@ -86,10 +90,19 @@ def app():
             if os.path.exists(os.path.join(option_pricing.output_folder, 'Convergence_Plot.png')):
                 st.image(os.path.join(option_pricing.output_folder, 'Convergence_Plot.png'), caption='Convergence of Monte Carlo Option Price')
 
-
         else:
             st.error("Error fetching stock price.")
 
+    # Footer with credits and GitHub link
+    st.markdown("---")
+    st.markdown("""
+    **Developed by Dr. Saeed Bidi**  
+    [GitHub Repository](https://github.com/saeedbidi/option_pricing)
+    
+    This app is designed to help you understand the pricing of European call and put options using various financial models.
+    The content and calculations provided are for educational purposes and should not be used for actual trading without further research.
+    """)
+    
 # Streamlit call
 if __name__ == "__main__":
     app()
