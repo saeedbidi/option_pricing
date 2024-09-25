@@ -3,7 +3,7 @@
 
 ## Quick Note:
 
-This app is now deployed on: https://saeed-option-pricing.streamlit.app/
+📢 This app is now released and deployed at: https://saeed-option-pricing.streamlit.app/
 
 
 🚀 I am excited to share my project focusing on pricing options. I implemented the **Black-Scholes model**, **Monte Carlo simulations**, and the **Binomial Tree method** for pricing European call and put options. I am further developing the project by adding backtesting, a machine learning model, and deploying the app.
