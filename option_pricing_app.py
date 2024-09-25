@@ -9,7 +9,7 @@ from option_pricing import OptionPricing
 
 # Streamlit app
 def app():
-    st.title("Option Pricing Models by Dr. Saeed Bidi")
+    st.title("Option Pricing Models (saeed.bidi@qmul.ac.uk)")
 
     # Description of the app and models
     st.markdown("""
