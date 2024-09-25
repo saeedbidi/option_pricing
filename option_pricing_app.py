@@ -9,7 +9,7 @@ from option_pricing import OptionPricing
 
 # Streamlit app
 def app():
-    st.title("Option Pricing Models")
+    st.title("Option Pricing Models by Dr. Saeed Bidi")
 
     # Input fields
     ticker = st.text_input("Enter stock ticker:", "AAPL")
