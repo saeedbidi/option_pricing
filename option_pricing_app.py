@@ -9,7 +9,14 @@ from option_pricing import OptionPricing
 
 # Streamlit app
 def app():
-    st.title("Option Pricing Models (saeed.bidi@qmul.ac.uk)")
+    st.set_page_config(
+        page_title="Option Pricing Models",
+        page_icon="📈",
+        layout="centered",  # Makes use of the full screen width
+        initial_sidebar_state="auto"
+    )
+
+    st.title("Option Pricing Models 📊 (saeed.bidi@qmul.ac.uk)")
 
     # Description of the app and models
     st.markdown("""
@@ -19,22 +26,60 @@ def app():
     You can enter key inputs like the stock ticker, strike price, risk-free rate, and time to maturity. 
     The app will also calculate implied volatility and provide you with a comparison between different pricing methods.
     """)
+    st.markdown("""
+    <style>
+    .stButton>button {
+        color: white;
+        background-color: #4CAF50;
+        border: none;
+        padding: 10px 24px;
+        font-size: 16px;
+        margin: 10px 2px;
+        cursor: pointer;
+    }
+    .stButton>button:hover {
+        background-color: #45a049;
+    }
+    </style>
+""", unsafe_allow_html=True)
 
-    # Input fields
-    ticker = st.text_input("Enter stock ticker:", "AAPL")
-    option_type = st.radio("Select option type:", ["Call", "Put"])
-    K = st.number_input("Enter strike price (K):", value=207.5)
-    days_to_maturity = st.number_input("Days to expiration:", value=7)
-    T = days_to_maturity / 365  # Time to maturity (in years)
-    r = st.number_input("Enter risk-free rate (r):", value=0.05)
-    market_price = st.number_input("Enter market price of the option:", value=22.25)
 
-    num_simulations = st.number_input("Number of simulations for Monte Carlo method (e.g., 100000):", value=10000)
-    N = st.number_input("Number of steps for Binomial Tree method (e.g., 100):", value=100)
+    # Layout 1
+    # col1, col2, col3 = st.columns(3)
+    # with col1:
+    #     ticker = st.text_input("Stock ticker:", "AAPL")
+    #     option_type = st.radio("Option type:", ["Call", "Put"])
 
-    # Date inputs for historical volatility calculation
-    start_date = st.date_input("Select start date for historical data:", datetime(2023, 1, 1))
-    end_date = st.date_input("Select end date for historical data:", datetime.today())
+    # with col2:
+    #     K = st.number_input("Strike price (K):", value=207.5)
+    #     days_to_maturity = st.number_input("Days to expiration:", value=7)
+    #     T = days_to_maturity / 365
+    #     r = st.number_input("Risk-free rate (r):", value=0.05)
+    #     market_price = st.number_input("Market price of the option:", value=22.25)
+      
+
+    # with col3:
+    #     num_simulations = st.number_input("Monte Carlo runs (e.g., 100000):", value=10000)
+    #     N = st.number_input("Binomial Tree steps (e.g., 100):", value=100)
+    #     # Date inputs for historical volatility calculation
+    #     start_date = st.date_input("Select start date for historical data:", datetime(2023, 1, 1))
+    #     end_date = st.date_input("Select end date for historical data:", datetime.today())
+
+    # Layout 2
+    with st.sidebar:
+        st.header("Option Pricing Inputs")
+        ticker = st.text_input("Stock ticker:", "AAPL")
+        option_type = st.radio("Option type:", ["Call", "Put"])
+        K = st.number_input("Strike price (K):", value=207.5)
+        days_to_maturity = st.number_input("Days to expiration:", value=7)
+        r = st.number_input("Risk-free rate (r):", value=0.05)
+        market_price = st.number_input("Market price of the option:", value=22.25)
+        num_simulations = st.number_input("Monte Carlo runs (e.g., 100000):", value=10000)
+        N = st.number_input("Binomial Tree steps (e.g., 100):", value=100)
+        start_date = st.date_input("Select start date for historical data:", datetime(2023, 1, 1))
+        end_date = st.date_input("Select end date for historical data:", datetime.today())
+    
+    T = days_to_maturity / 365
 
     # Initialise the OptionPricing class
     option_pricing = OptionPricing(ticker, option_type.lower())  # Pass the type as lowercase
@@ -44,7 +89,7 @@ def app():
                                                              end_date.strftime('%Y-%m-%d'))
 
     # Button to calculate all results
-    if st.button("Calculate All Results"):
+    if st.button("Calculate All Results 🚀"):
         st.info("Fetching stock data and performing calculations, this might take a few moments...")
         
         # Fetch the current stock price
@@ -102,7 +147,7 @@ def app():
     This app is designed to help you understand the pricing of European call and put options using various financial models.
     The content and calculations provided are for educational purposes and should not be used for actual trading without further research.
     """)
-    
+
 # Streamlit call
 if __name__ == "__main__":
     app()
