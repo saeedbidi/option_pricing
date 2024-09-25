@@ -5,7 +5,7 @@ from datetime import datetime
 import os
 import matplotlib.pyplot as plt
 from option_pricing import OptionPricing 
-
+import time
 
 # Streamlit app
 def app():
@@ -26,6 +26,7 @@ def app():
     You can enter key inputs like the stock ticker, strike price, risk-free rate, and time to maturity. 
     The app will also calculate implied volatility and provide you with a comparison between different pricing methods.
     """)
+  # CSS styles for button
     st.markdown("""
     <style>
     .stButton>button {
@@ -42,6 +43,10 @@ def app():
     }
     </style>
 """, unsafe_allow_html=True)
+
+
+
+
 
 
     # Layout 1
@@ -90,6 +95,9 @@ def app():
 
     # Button to calculate all results
     if st.button("Calculate All Results 🚀"):
+        with st.spinner('Calculating...'):
+            # Code to calculate results
+            time.sleep(2)
         st.info("Fetching stock data and performing calculations, this might take a few moments...")
         
         # Fetch the current stock price
@@ -104,9 +112,8 @@ def app():
             mc_price = option_pricing.monte_carlo_option_price(option_pricing.S, K, T, r, sigma, num_simulations)
             bt_price = option_pricing.binomial_tree_option_price(option_pricing.S, K, T, r, sigma, N)
 
-            st.success(f"Black-Scholes Price: {bs_price:.2f}")
-            st.success(f"Monte Carlo Price: {mc_price[0]:.2f}")
-            st.success(f"Binomial Tree Price: {bt_price:.2f}")
+
+
 
             # Generate comparative pricing plot
             option_pricing.comparative_pricing_plot(bs_price, mc_price, bt_price)
@@ -118,14 +125,28 @@ def app():
 
             # Calculate implied volatility
             iv = option_pricing.implied_volatility(option_pricing.S, K, T, r, market_price)
+            # st.success("Calculation completed successfully! 🎉")
+
+            # st.success(f"Black-Scholes Price Prediction: {bs_price:.2f}")
+            # st.success(f"Monte Carlo Price Prediction: {mc_price[0]:.2f}")
+            # st.success(f"Binomial Tree Price Prediction: {bt_price:.2f}")
+            
+            # Create a container for the price predictions
+            with st.container():
+                st.success("Price Predictions:")
+                st.markdown(f"&nbsp;&nbsp;&nbsp;&nbsp;**Black-Scholes Price:** {bs_price:.2f}")
+                st.markdown(f"&nbsp;&nbsp;&nbsp;&nbsp;**Monte Carlo Price:** {mc_price[0]:.2f}")
+                st.markdown(f"&nbsp;&nbsp;&nbsp;&nbsp;**Binomial Tree Price:** {bt_price:.2f}")
+
+            # After calculating bt_price, display the prediction
+
             if iv is not None:
                 st.success(f"Implied Volatility: {iv:.2%}")
             else:
                 st.error("Could not calculate implied volatility.")
+        
 
             # Display plots
-            if os.path.exists(os.path.join(option_pricing.output_folder, 'Pricing_Comparison.png')):
-                st.image(os.path.join(option_pricing.output_folder, 'Pricing_Comparison.png'), caption='Option Pricing: Black-Scholes vs Monte Carlo vs Binomial Tree')
             if os.path.exists(os.path.join(option_pricing.output_folder, 'Convergence_Plot.png')):
                 st.image(os.path.join(option_pricing.output_folder, 'Option_price_vs_stock_price.png'), caption='Option Price vs Stock Price')
             if os.path.exists(os.path.join(option_pricing.output_folder, 'Monte_Carlo_Paths.png')):
@@ -134,10 +155,12 @@ def app():
                 st.image(os.path.join(option_pricing.output_folder, 'Payoff_Histogram.png'), caption='Histogram of Simulated Payoffs')
             if os.path.exists(os.path.join(option_pricing.output_folder, 'Convergence_Plot.png')):
                 st.image(os.path.join(option_pricing.output_folder, 'Convergence_Plot.png'), caption='Convergence of Monte Carlo Option Price')
+            if os.path.exists(os.path.join(option_pricing.output_folder, 'Pricing_Comparison.png')):
+                st.image(os.path.join(option_pricing.output_folder, 'Pricing_Comparison.png'), caption='Option Pricing: Black-Scholes vs Monte Carlo vs Binomial Tree')
+ 
 
         else:
             st.error("Error fetching stock price.")
-
     # Footer with credits and GitHub link
     st.markdown("---")
     st.markdown("""
