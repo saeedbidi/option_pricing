@@ -15,7 +15,7 @@
 
 ##  💰 **Option Pricing Model with Black-Scholes, Monte Carlo and Binomial Tree Methods**
 
-The **Black-Scholes model**, **Monte Carlo simulations**, and the **Binomial Tree method** are vital tools in financial markets for pricing options. Each method offers a distinct approach to estimating the price of call and put options, relying on parameters such as stock price, strike price, time to maturity, risk-free rate, and volatility. I conducted **backtesting** using Apple Inc. (AAPL) stock data from the year 2013, sourced from OptionData.org.
+The **Black-Scholes model**, **Monte Carlo simulations**, and the **Binomial Tree method** are vital tools in financial markets for pricing options. Each method offers a distinct approach to estimating the price of call and put options, relying on parameters such as stock price, strike price, time to maturity, risk-free rate, and volatility. I conducted **backtesting** using Apple Inc. (AAPL) stock data from the year 2013, sourced from https://optiondata.org/.
 
 ### **Features**
 - Fetches **real-time stock data** (e.g., Apple stock) using `yfinance`.
@@ -226,6 +226,7 @@ All methods provide alternative means to calculate option prices, especially for
 - [Monte Carlo Methods - Investopedia](https://www.investopedia.com/terms/m/montecarlosimulation.asp)
 - [Binomial Tree Model - Investopedia](https://www.investopedia.com/terms/b/binomialoptionpricing.asp)
 - [Yahoo Finance API](https://pypi.org/project/yfinance/)
+- [Backtesting data source](https://optiondata.org/)
 
 ## 📜 **License**
 This project is open-source and available under the [MIT License](LICENSE).

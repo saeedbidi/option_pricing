@@ -1,0 +1,15 @@
+Metadata-Version: 2.1
+Name: derivative-pricing
+Version: 1.0
+Summary: pricing European call and put options using various models
+Home-page: https://github.com/saeedbidi/option_pricing
+Author: Saeed Bidi
+Author-email: saeed.bidi@qmul.ac.uk
+Requires-Python: >=3.8
+License-File: LICENSE
+Requires-Dist: numpy
+Requires-Dist: yfinance
+Requires-Dist: scipy
+Requires-Dist: matplotlib
+Requires-Dist: streamlit
+Requires-Dist: seaborn
