@@ -8,14 +8,14 @@
 
 🚀 I am excited to share my project focusing on pricing options. I implemented the **Black-Scholes model**, **Monte Carlo simulations**, and the **Binomial Tree method** for pricing options. I am further developing the project by adding backtesting, a machine learning model, and deploying the app.
 
-🎉 I believe in hands-on learning. As a Senior Data Scientist with a PhD in Computational Physics, I have a strong foundation in analytical thinking and complex problem-solving. Through hands-on work in finance, I am leveraging my data science skills to gain practical experience and build a robust understanding of financial systems.
+👨🏻‍💻 About me: I believe in hands-on learning. As a Senior Data Scientist with a PhD in Computational Physics, I have a strong foundation in analytical thinking and complex problem-solving. Through hands-on work in finance, I am leveraging my data science skills to gain practical experience and build a robust understanding of financial systems.
+###### **Contact [my LinkedIn](https://www.linkedin.com/in/saeed-bidi/) 👨🏻‍💻**
 
-🛠️ Real-world stock data is fetched via the **Yahoo Finance API** to compute option prices, historical volatility, and option sensitivities (the Greeks). The project also provides visualisations and comparisons of option prices using all three methods.
 
 
 ##  💰 **Option Pricing Model with Black-Scholes, Monte Carlo and Binomial Tree Methods**
 
-The **Black-Scholes model**, **Monte Carlo simulations**, and the **Binomial Tree method** are vital tools in financial markets for pricing options. Each method offers a distinct approach to estimating the price of call and put options, relying on parameters such as stock price, strike price, time to maturity, risk-free rate, and volatility. I conducted **backtesting** using Apple Inc. (AAPL) stock data from the year 2013, sourced from OptionData.org.
+In this project,  **Black-Scholes model**, **Monte Carlo simulations**, and the **Binomial Tree method** are vital tools in financial markets for pricing options. Each method offers a distinct approach to estimating the price of call and put options, relying on parameters such as stock price, strike price, time to maturity, risk-free rate, and volatility. I conducted **backtesting** using Apple Inc. (AAPL) stock data from the year 2013, sourced from https://optiondata.org/. Real-world stock data is fetched via the **Yahoo Finance API** to compute option prices, historical volatility, and option sensitivities (the Greeks). The project also provides visualisations and comparisons of option prices using all three methods. 
 
 ### **Features**
 - Fetches **real-time stock data** (e.g., Apple stock) using `yfinance`.
@@ -23,6 +23,7 @@ The **Black-Scholes model**, **Monte Carlo simulations**, and the **Binomial Tre
   - **Black-Scholes**
   - **Monte Carlo**
   - **Binomial Tree**
+- **Backtesting**
 - Calculates **historical volatility** based on daily returns.
 - Computes the **Greeks**: **Delta**, **Gamma**, **Vega**, **Theta**, and **Rho**.
 - Calculates **Implied Volatility** based on market prices.
@@ -226,6 +227,7 @@ All methods provide alternative means to calculate option prices, especially for
 - [Monte Carlo Methods - Investopedia](https://www.investopedia.com/terms/m/montecarlosimulation.asp)
 - [Binomial Tree Model - Investopedia](https://www.investopedia.com/terms/b/binomialoptionpricing.asp)
 - [Yahoo Finance API](https://pypi.org/project/yfinance/)
+- [Backtesting data source](https://optiondata.org/)
 
 ## 📜 **License**
 This project is open-source and available under the [MIT License](LICENSE).

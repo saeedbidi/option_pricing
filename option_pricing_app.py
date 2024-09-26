@@ -24,7 +24,7 @@ def app():
 
     # Description of the app and models
     st.markdown("""
-    Welcome to the **Option Pricing Models** app. This tool allows you to calculate European option prices 
+    Welcome to the **Option Pricing Models** app. This tool allows you to calculate option prices 
     using various financial models such as the Black-Scholes model, Monte Carlo simulations, and Binomial Tree models.
     
     You can enter key inputs like the stock ticker, strike price, risk-free rate, and time to maturity. 
@@ -97,10 +97,15 @@ def app():
         with st.spinner('Calculating...'):
             # Code to calculate results
             time.sleep(2)
-        st.info("Fetching stock data and performing calculations, this might take a few moments...")
+        fetching_message = st.info("Fetching stock data and performing calculations, this might take a few moments...")
         
         # Fetch the current stock price
         option_pricing.get_stock_data()
+        fetching_message.empty()
+
+        computing_message = st.info("Models started! Please wait ...")
+
+
         if option_pricing.S:
             st.success(f"Current Stock Price: {option_pricing.S:.2f} (USD) according to the live Yahoo market data")
             option_pricing.output_folder = "output_streamlit"
@@ -173,19 +178,24 @@ def app():
                 st.image(os.path.join(option_pricing.output_folder, 'Payoff_Histogram.png'))
             if os.path.exists(os.path.join(option_pricing.output_folder, 'Convergence_Plot.png')):
                 st.image(os.path.join(option_pricing.output_folder, 'Convergence_Plot.png'))
-            if os.path.exists(os.path.join(option_pricing.output_folder, 'Pricing_Comparison.png')):
-                st.image(os.path.join(option_pricing.output_folder, 'Pricing_Comparison.png'))
+            # if os.path.exists(os.path.join(option_pricing.output_folder, 'Pricing_Comparison.png')):
+            #     st.image(os.path.join(option_pricing.output_folder, 'Pricing_Comparison.png'))
  
 
         else:
             st.error("Error fetching stock price.")
+        
+        computing_message.empty()
     # Footer with credits and GitHub link
+    
     st.markdown("---")
     st.markdown("""
-    **Developed by Dr. Saeed Bidi**  
+    **Developed by Saeed Bidi, PhD**  
+    [My LinkedIn](https://www.linkedin.com/in/saeed-bidi/)
+                
     [GitHub Repository](https://github.com/saeedbidi/option_pricing)
     
-    I designed this app to help you model the pricing of European call and put options using various financial models.
+    I designed this app to help you model the pricing of options using various financial models.
     The content and calculations provided are for educational purposes and should not be used for actual trading without further research.
     """)
 
