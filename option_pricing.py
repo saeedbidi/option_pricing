@@ -1,11 +1,18 @@
 # %%
+import os
+from datetime import datetime
+
 import numpy as np
 import yfinance as yf
 from scipy.stats import norm
 from scipy.optimize import brentq
 import matplotlib.pyplot as plt
-import os
-from datetime import datetime
+import seaborn as sns
+import pandas as pd
+from matplotlib.ticker import ScalarFormatter
+import matplotlib.ticker as mticker
+
+
 
 
 class OptionPricing:
@@ -25,7 +32,7 @@ class OptionPricing:
         self.S = None  # Stock price
         self.sigma = None  # Volatility
 
-    def black_scholes_option(self, S, K, T, r, sigma, q=0):
+    def black_scholes_option(self, S, K, T, r, sigma, option_type, q=0):
         """
         Calculate the option price using the Black-Scholes formula.
 
@@ -36,6 +43,7 @@ class OptionPricing:
             r (float): Risk-free rate.
             sigma (float): Volatility.
             q (float): Dividend rate. Default is 0.
+            option_type: Call or put.
 
         Returns:
             float: Option price.
@@ -43,16 +51,16 @@ class OptionPricing:
         d1 = (np.log(S / K) + (r - q + 0.5 * sigma ** 2) * T) / (sigma * np.sqrt(T))
         d2 = d1 - sigma * np.sqrt(T)
 
-        if self.option_type == 'call':
+        if option_type == 'call':
             price = S * np.exp(-q * T) * norm.cdf(d1) - K * np.exp(-r * T) * norm.cdf(d2)
-        elif self.option_type == 'put':
+        elif option_type == 'put':
             price = K * np.exp(-r * T) * norm.cdf(-d2) - S * np.exp(-q * T) * norm.cdf(-d1)
         else:
             raise ValueError("option_type must be 'call' or 'put'")
 
         return price
 
-    def binomial_tree_option_price(self, S, K, T, r, sigma, N):
+    def binomial_tree_option_price(self, S, K, T, r, sigma, N, option_type):
         """
         Calculate option price using the Binomial Tree method.
 
@@ -63,7 +71,7 @@ class OptionPricing:
             r (float): Risk-free rate.
             sigma (float): Volatility.
             N (int): Number of time steps.
-
+            option_type: Call or put.
         Returns:
             float: Option price.
         """
@@ -76,7 +84,7 @@ class OptionPricing:
         ST = np.array([S * (u ** (N - i)) * (d ** i) for i in range(N + 1)])
 
         # Initialise option values at maturity
-        option_values = np.maximum(0, ST - K) if self.option_type == 'call' else np.maximum(0, K - ST)
+        option_values = np.maximum(0, ST - K) if option_type == 'call' else np.maximum(0, K - ST)
 
         # Backward induction
         for j in range(N - 1, -1, -1):
@@ -84,7 +92,7 @@ class OptionPricing:
 
         return option_values[0]
 
-    def monte_carlo_option_price(self, S, K, T, r, sigma, num_simulations):
+    def monte_carlo_option_price(self, S, K, T, r, sigma, num_simulations,option_type):
         """
         Calculate option price using Monte Carlo simulation.
 
@@ -95,7 +103,7 @@ class OptionPricing:
             r (float): Risk-free rate.
             sigma (float): Volatility.
             num_simulations (int): Number of simulations. Default is 10,000.
-
+            option_type: Call or put.
         Returns:
             float: Option price and list of plot filenames.
         """
@@ -114,7 +122,7 @@ class OptionPricing:
                 path.append(ST)
 
             paths.append(path)
-            payoff = max(0, ST - K) if self.option_type == 'call' else max(0, K - ST)
+            payoff = max(0, ST - K) if option_type == 'call' else max(0, K - ST)
             payoffs.append(payoff)
             estimated_prices.append(np.exp(-r * T) * np.mean(payoffs))
 
@@ -133,12 +141,17 @@ class OptionPricing:
             estimated_prices (list): Convergence of the estimated prices.
         """
         os.makedirs(self.output_folder, exist_ok=True)
-
+        # Set common styling for plots
+        plt.rcParams.update({
+            'font.size': 14,           # Font size
+            'lines.linewidth': 2,      # Line width
+            'figure.dpi': 300          # Image quality
+        })
         # Plot stock price paths
         path_filename = os.path.join(self.output_folder, 'Monte_Carlo_Paths.png')
-        plt.figure(figsize=(10, 6))
+        plt.figure(figsize=(12, 6))
         for path in paths[:200]:  # Limit to 200 paths for clarity
-            plt.plot(path, linewidth=0.5, alpha=0.6)
+            plt.plot(path, linewidth=0.5)
         plt.title(f'Monte Carlo Simulation of Stock Price Paths ({self.ticker})')
         plt.xlabel('Time Steps')
         plt.ylabel('Stock Price')
@@ -147,8 +160,8 @@ class OptionPricing:
 
         # Histogram of payoffs
         payoff_filename = os.path.join(self.output_folder, 'Payoff_Histogram.png')
-        plt.figure(figsize=(10, 6))
-        plt.hist(payoffs, bins=50, alpha=0.75)
+        plt.figure(figsize=(12, 6))
+        plt.hist(payoffs, bins=50)
         plt.title(f'Histogram of Simulated Payoffs ({self.ticker})')
         plt.xlabel('Payoff')
         plt.ylabel('Frequency')
@@ -157,8 +170,8 @@ class OptionPricing:
 
         # Convergence plot
         convergence_filename = os.path.join(self.output_folder, 'Convergence_Plot.png')
-        plt.figure(figsize=(10, 6))
-        plt.plot(estimated_prices, color='blue', alpha=0.75)
+        plt.figure(figsize=(12, 6))
+        plt.plot(estimated_prices, color='blue')
         plt.title(f'Convergence of Monte Carlo Option Price ({self.ticker})')
         plt.xlabel('Number of Simulations')
         plt.ylabel('Option Price Estimate')
@@ -258,7 +271,7 @@ class OptionPricing:
 
         for _ in range(max_iterations):
             # Calculate the option price with the current sigma
-            price = self.black_scholes_option(S, K, T, r, sigma)
+            price = self.black_scholes_option(S, K, T, r, sigma, self.option_type)
             
             # Calculate the vega (the sensitivity of the option price to volatility)
             vega = self.greeks(S, K, T, r, sigma)[2]
@@ -287,7 +300,7 @@ class OptionPricing:
     
     def implied_volatility_bisection(self, S, K, T, r, market_price, lower_bound=0.01, upper_bound=5.0, max_iterations=100, tolerance=1e-6):
         def price_difference(sigma):
-            return self.black_scholes_option(S, K, T, r, sigma) - market_price
+            return self.black_scholes_option(S, K, T, r, sigma, self.option_type) - market_price
 
         f_lower = price_difference(lower_bound)
         f_upper = price_difference(upper_bound)
@@ -325,7 +338,7 @@ class OptionPricing:
             float: Implied volatility.
         """
         def option_price_diff(sigma):
-                price = self.black_scholes_option(S, K, T, r, sigma, q=0)
+                price = self.black_scholes_option(S, K, T, r, sigma, self.option_type, q=0)
                 price_diff = price - market_price
                 print(f"Sigma: {sigma:.4f}, Calculated Price: {price:.4f}, Market Price: {market_price:.4f}, Price Diff: {price_diff:.4f}")
                 return price_diff
@@ -451,9 +464,15 @@ class OptionPricing:
         print("Report saved to options_report.txt")
 
     def plot_option_price_vs_stock_price(self, S_range, K_list, T, r, sigma):
-        plt.figure(figsize=(10, 6))
+        # Set common styling for plots
+        plt.rcParams.update({
+            'font.size': 14,           # Font size
+            'lines.linewidth': 2,      # Line width
+            'figure.dpi': 300          # Image quality
+        })
+        plt.figure(figsize=(12, 6))
         for K in K_list:
-            option_prices = [self.black_scholes_option(S, K, T, r, sigma, q=0) for S in S_range]
+            option_prices = [self.black_scholes_option(S, K, T, r, sigma, self.option_type, q=0) for S in S_range]
             plt.plot(S_range, option_prices, label=f"Strike Price {K:.1f}")
 
         plt.title(f"{self.option_type.capitalize()} Option Price vs Stock Price using Black Scholes model ({self.ticker})")
@@ -468,14 +487,173 @@ class OptionPricing:
     def comparative_pricing_plot(self, bs_price, mc_price, bt_price):
         methods = ['Black-Scholes', 'Monte Carlo', 'Binomial Tree']
         prices = [bs_price, mc_price[0], bt_price]
-        
-        plt.figure(figsize=(8, 5))
-        plt.bar(methods, prices, color=['blue', 'green', 'orange'])
+        # Set common styling for plots
+        plt.rcParams.update({
+            'font.size': 14,           # Font size
+            'lines.linewidth': 2,      # Line width
+            'figure.dpi': 300          # Image quality
+        })
+        plt.figure(figsize=(12, 6))
+        plt.bar(methods, prices, color=['blue', 'red', 'black'])
         plt.title(f'Option Pricing: Black-Scholes vs Monte Carlo vs Binomial Tree ({self.ticker})')
         plt.ylabel('Option Price')
         plot_comparison = os.path.join(self.output_folder, 'Pricing_Comparison.png')
         plt.savefig(plot_comparison)
         plt.show()
+
+
+    def backtest(self, file_path, n_data = None, n_each_day = 5, risk_free_rate=0.05, num_steps=100, keep_first_n_rows_per_date='False'):
+        # Load the data
+        # Load the data
+        if n_data is not None:
+            self.stock_data = pd.read_csv(file_path, nrows=n_data)
+        else:
+            self.stock_data = pd.read_csv(file_path)        
+        # Filter for the desired ticker
+        self.stock_data = self.stock_data[self.stock_data['act_symbol'] == self.ticker]
+        
+        # Optionally keep only one row per date
+        if keep_first_n_rows_per_date:
+            self.stock_data = self.stock_data.groupby('date').head(n_each_day)  # Keep the first 5 records for each date
+
+
+        # Calculate mid prices
+        self.stock_data['mid_price'] = (self.stock_data['bid'] + self.stock_data['ask']) / 2
+        
+        # Initialize columns for theoretical prices
+        self.stock_data['BS_price'] = np.nan
+        self.stock_data['BT_price'] = np.nan
+        self.stock_data['MC_price'] = np.nan
+        
+        for index, row in self.stock_data.iterrows():
+            S = row['stock_price']
+            K = row['strike']
+            T = (pd.to_datetime(row['expiration']) - pd.to_datetime(row['date'])).days / 365  # Time to maturity
+            sigma = row['implied_volatility']
+            option_type = row['call_put'].lower()
+
+            # Calculate theoretical prices
+            bs_price = self.black_scholes_option(S, K, T, risk_free_rate, sigma, option_type)
+            bt_price = self.binomial_tree_option_price(S, K, T, risk_free_rate, sigma, num_steps, option_type)
+            mc_price = self.monte_carlo_option_price(S, K, T, risk_free_rate, sigma, 10000, option_type)
+            
+            # Store the calculated prices
+            self.stock_data.at[index, 'BS_price'] = bs_price
+            self.stock_data.at[index, 'BT_price'] = bt_price
+            self.stock_data.at[index, 'MC_price'] = mc_price[0]
+
+        # Calculate errors
+        self.stock_data['BS_error'] = self.stock_data['BS_price'] - self.stock_data['mid_price']
+        self.stock_data['BT_error'] = self.stock_data['BT_price'] - self.stock_data['mid_price']
+        self.stock_data['MC_error'] = self.stock_data['MC_price'] - self.stock_data['mid_price']
+
+        # Calculate percentage errors
+        self.stock_data['BS_error_pct'] = ((self.stock_data['BS_price'] - self.stock_data['mid_price']) / self.stock_data['mid_price']) * 100
+        self.stock_data['BT_error_pct'] = ((self.stock_data['BT_price'] - self.stock_data['mid_price']) / self.stock_data['mid_price']) * 100
+        self.stock_data['MC_error_pct'] = ((self.stock_data['MC_price'] - self.stock_data['mid_price']) / self.stock_data['mid_price']) * 100
+
+        # Compute error metrics
+        mae_bs = self.stock_data['BS_error'].abs().mean()
+        rmse_bs = (self.stock_data['BS_error'] ** 2).mean() ** 0.5
+        
+        mae_bt = self.stock_data['BT_error'].abs().mean()
+        rmse_bt = (self.stock_data['BT_error'] ** 2).mean() ** 0.5
+        
+        mae_mc = self.stock_data['MC_error'].abs().mean()
+        rmse_mc = (self.stock_data['MC_error'] ** 2).mean() ** 0.5
+
+        print(f'Black-Scholes MAE: {mae_bs}, RMSE: {rmse_bs}')
+        print(f'Binomial Tree MAE: {mae_bt}, RMSE: {rmse_bt}')
+        print(f'Monte Carlo MAE: {mae_mc}, RMSE: {rmse_mc}')
+
+        # Create output directories
+        backtest_folder = os.path.join(self.output_folder, 'backtesting')
+        os.makedirs(backtest_folder, exist_ok=True)
+
+        # Save results to output folder
+        self.stock_data.to_csv(f'output/backtesting/{self.ticker}_backtest_results.csv', index=False)
+        backtest_results = self.stock_data
+
+        # Convert 'expiration' to datetime format
+        backtest_results['expiration'] = pd.to_datetime(backtest_results['expiration'])
+
+        # Sort the DataFrame based on the 'expiration' column
+        backtest_results = backtest_results.sort_values(by='expiration')
+
+        # Set common styling for plots
+        plt.rcParams.update({
+            'font.size': 14,           # Font size
+            'lines.linewidth': 5,      # Line width
+            'figure.dpi': 300          # Image quality
+        })
+
+        # 1. Scatter Plot of Mid Price vs. Model Prices
+        backtest_results = backtest_results.sort_values(by='mid_price')
+
+        plt.figure(figsize=(9, 9))
+        plt.plot(backtest_results['mid_price'], backtest_results['BS_price'], 
+                label='Black-Scholes Price', marker='o', color='blue', linestyle='-')
+        plt.plot(backtest_results['mid_price'], backtest_results['BT_price'], 
+                label='Binomial Tree Price', marker='o', color='black', linestyle='--')
+        plt.plot(backtest_results['mid_price'], backtest_results['MC_price'], 
+                label='Monte Carlo Price', marker='o', color='red', linestyle=':')
+
+        plt.xlabel('Mid Option Price')
+        plt.ylabel('Predicted Option Price')
+        plt.title(f'Option Mid Price vs. Model Prices for {self.ticker} (2013)')
+        plt.legend()
+        plt.tight_layout()
+        plt.savefig('output/backtesting/mid_price_vs_model_prices.png')
+        plt.show()  # Display the plot
+        plt.close()
+
+        # Sort the DataFrame based on the 'strike' column
+        backtest_results_sorted = backtest_results.sort_values(by='strike')
+        # 2. Line Plot of Price Across Dates
+
+        backtest_results_sorted_zero_removed = backtest_results_sorted[backtest_results_sorted['mid_price']>5]
+        backtest_results_sorted_zero_removed = backtest_results_sorted_zero_removed.sort_values(by='date')
+        plt.figure(figsize=(12, 6))
+
+        # Plot Black-Scholes Prediction
+        plt.plot(backtest_results_sorted_zero_removed['date'], 
+                backtest_results_sorted_zero_removed['MC_price'], 
+                label='Monte Carlo Prediction', marker='o', color='red', linestyle='-')
+
+        # Plot Mid Price
+        plt.plot(backtest_results_sorted_zero_removed['date'], 
+                backtest_results_sorted_zero_removed['mid_price'], 
+                label='Mid Price', marker='o', color='black', linestyle='--')
+
+        # Set labels
+        plt.xlabel('Date')
+        plt.ylabel('Price')
+
+        # Set title
+        plt.title(f'Price Across Dates for {self.ticker} (2013)')
+
+        # Customize x-ticks: Show only every nth date to avoid overcrowding
+        n_ticks = 10  # Adjust this to control the number of dates shown
+        dates = backtest_results_sorted_zero_removed['date']
+        plt.xticks(dates[::n_ticks], rotation=45)  # Show every nth date, rotated for readability
+
+        # Show legend
+        plt.legend()
+
+        # Adjust layout to prevent label overlap
+        plt.tight_layout()
+
+        # Save the figure
+        plt.savefig('output/backtesting/price_vs_date_plot.png')
+
+        # Show the plot
+        plt.show()
+
+        # Close the plot
+        plt.close()
+        # display(backtest_results)
+        return backtest_results
+
     
 if __name__ == "__main__":
    # Initialize the OptionPricing class
@@ -535,7 +713,14 @@ if __name__ == "__main__":
     # market_price = 9.6  # Example market price
     
 
-
+   # AAPL
+    # ticker = "AAPL"  # Example ticker
+    # option_type = "put"  # Can be 'call' or 'put'
+    # K = 400  # Example strike price
+    # days_to_maturity = 2
+    # T = days_to_maturity / 365  # Time to maturity (in years)
+    # r = 0.05  # Example risk-free rate
+    # market_price = 0.01  # Example market price
 
     option = OptionPricing(ticker, option_type)
 
@@ -550,16 +735,16 @@ if __name__ == "__main__":
     S = option.S
 
     # Calculate Black-Scholes price
-    bs_price = option.black_scholes_option(S, K, T, r, sigma)
+    bs_price = option.black_scholes_option(S, K, T, r, sigma, option_type, q=0)
     print(f"Black-Scholes {option_type} price: {bs_price}")
 
 
     # Calculate Monte Carlo price
-    mc_price = option.monte_carlo_option_price(S, K, T, r, sigma,mc_num_sim)
-    print(f"Monte Carlo {option_type} price: {mc_price}")
+    mc_price = option.monte_carlo_option_price(S, K, T, r, sigma,mc_num_sim, option_type)
+    print(f"Monte Carlo {option_type} price: {mc_price[0]}")
     
     # Calculate Binomial Tree price
-    bt_price = option.binomial_tree_option_price(S, K, T, r, sigma, bt_num_step)
+    bt_price = option.binomial_tree_option_price(S, K, T, r, sigma, bt_num_step,option_type)
     print(f"Binomial Tree {option_type} price: {bt_price}")
     
     # Generate comparative pricing plot
@@ -581,6 +766,57 @@ if __name__ == "__main__":
     S_range = np.linspace(S * 0.8, S * 1.2, 100)
     K_list = [K, K * 1.1, K * 0.9]
     option.plot_option_price_vs_stock_price(S_range, K_list, T, r, sigma)
+
+
+# %%
+# file_path = 'backtesting-data/Optiondataorg/AAPL_2013.csv'
+
+# backtest_results = option.backtest(file_path, n_each_day = 1, keep_first_n_rows_per_date=True)
+
+# %%
+# import matplotlib.pyplot as plt
+# import matplotlib.ticker as mticker
+# import pandas as pd
+
+# # Sample data for demonstration (replace with your actual data)
+# backtest_results_sorted = {
+#     'strike': [100, 110, 120, 130, 140],
+#     'BS_error_pct': [0.1, 0.2, 0.4, 0.05, 0.003],
+#     'BT_error_pct': [0.15, 0.25, 0.35, 0.1, 0.02],
+# }
+
+# # Convert the sample data into a DataFrame if necessary
+# backtest_results_sorted = pd.DataFrame(backtest_results_sorted)
+
+# # 4. Line Plot of Percentage Errors vs. Strike Price
+# plt.figure(figsize=(12, 6))
+# plt.plot(backtest_results_sorted['strike'], backtest_results_sorted['BS_error_pct'], 
+#          label='Black-Scholes Error %', marker='o', color='blue', linestyle='-')
+# plt.plot(backtest_results_sorted['strike'], backtest_results_sorted['BT_error_pct'], 
+#          label='Binomial Tree Error %', marker='o', color='black', linestyle='--')
+
+# plt.xlabel('Strike Price')
+# plt.ylabel('Error (%) [Log Scale]')
+
+# # Set the y-scale to logarithmic
+# plt.yscale('log')
+
+# # Customize y-ticks for better readability
+# # The actual values you want to display
+# log_values = [0.001, 0.01, 0.1, 1]  # Example values, adjust as needed
+# plt.yticks(log_values)  # Set ticks to specific log values
+
+# # Format the y-ticks to show decimals instead of scientific notation
+# formatter = mticker.FormatStrFormatter('%.2f')  # Display as two decimal places
+# plt.gca().yaxis.set_major_formatter(formatter)
+
+# # plt.title(f'Percentage Error vs. Strike Price for {self.ticker} (2013)')
+# plt.xticks(rotation=45)
+# plt.legend()
+# plt.tight_layout()
+# plt.savefig('output/backtesting/percentage_error_vs_strike_plot.png')
+# plt.show()  # Display the plot
+# plt.close()
 
 
 

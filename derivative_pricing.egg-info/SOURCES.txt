@@ -6,3 +6,4 @@ derivative_pricing.egg-info/SOURCES.txt
 derivative_pricing.egg-info/dependency_links.txt
 derivative_pricing.egg-info/requires.txt
 derivative_pricing.egg-info/top_level.txt
+old/old_func.py

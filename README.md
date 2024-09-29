@@ -93,15 +93,16 @@ The script will generate the following output:
 ```
 #### **Sample of Option vs Stock price plot using Black-Scholes model**
 
-![Option_price_vs_stock](/output/Option_price_vs_stock_price.png)
+![Option_price_vs_stock](output/Option_price_vs_stock_price.png)
 
 #### **Sample of Monte Carlo paths and convergence plot**
 
-![Monte_Carlo_Paths](/output/Monte_Carlo_Paths.png)
-![Convergence_Plot](/output/Convergence_Plot.png)
+![Monte_Carlo_Paths](output/Monte_Carlo_Paths.png)
+![Convergence_Plot](output/Convergence_Plot.png)
 
 #### **Backtesting Options Pricing Models: Apple Inc. (2013)**
-![alt text](output/backtesting/bar_percentage_error_plot.png)
+![alt text](output/backtesting/mid_price_vs_model_prices.png)
+![alt text](output/backtesting/price_vs_date_plot.png)
 
 ## 📂 **Project Structure**
 
