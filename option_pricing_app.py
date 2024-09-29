@@ -112,9 +112,9 @@ def app():
             os.makedirs(option_pricing.output_folder, exist_ok=True)
             
             # Calculate prices using different models
-            bs_price = option_pricing.black_scholes_option(option_pricing.S, K, T, r, sigma)
-            mc_price = option_pricing.monte_carlo_option_price(option_pricing.S, K, T, r, sigma, num_simulations)
-            bt_price = option_pricing.binomial_tree_option_price(option_pricing.S, K, T, r, sigma, N)
+            bs_price = option_pricing.black_scholes_option(option_pricing.S, K, T, r, sigma, option_pricing.option_type.lower())
+            mc_price = option_pricing.monte_carlo_option_price(option_pricing.S, K, T, r, sigma, num_simulations,option_pricing.option_type.lower())
+            bt_price = option_pricing.binomial_tree_option_price(option_pricing.S, K, T, r, sigma, N, option_pricing.option_type.lower())
 
             # Generate the range of stock prices for plotting
             # Generate the range of stock prices for plotting
@@ -126,7 +126,7 @@ def app():
 
             # Calculate Black-Scholes prices for each strike price
             for K_strike in strike_prices:
-                bs_prices = [option_pricing.black_scholes_option(s, K_strike, T, r, sigma) for s in S_range]
+                bs_prices = [option_pricing.black_scholes_option(s, K_strike, T, r, sigma, option_pricing.option_type.lower()) for s in S_range]
                 fig.add_trace(go.Scatter(x=S_range, y=bs_prices, mode='lines', name=f"Strike Price: {K_strike:.2f}"))
 
             # Customize the layout
