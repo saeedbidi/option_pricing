@@ -17,7 +17,7 @@
 
         3. Option Prices:
         - Option Price (Black-Scholes): 20.49 
-        - Option Price (Monte Carlo): 20.50
+        - Option Price (Monte Carlo): 20.49
         - Option Price (Binomial Tree): 20.49 
 
         4. Greeks:
