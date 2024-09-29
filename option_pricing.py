@@ -590,7 +590,7 @@ class OptionPricing:
         # 1. Scatter Plot of Mid Price vs. Model Prices
         backtest_results = backtest_results.sort_values(by='mid_price')
 
-        plt.figure(figsize=(9, 9))
+        plt.figure(figsize=(12, 6))
         plt.plot(backtest_results['mid_price'], backtest_results['BS_price'], 
                 label='Black-Scholes Price', marker='o', color='blue', linestyle='-')
         plt.plot(backtest_results['mid_price'], backtest_results['BT_price'], 
@@ -625,31 +625,17 @@ class OptionPricing:
                 backtest_results_sorted_zero_removed['mid_price'], 
                 label='Mid Price', marker='o', color='black', linestyle='--')
 
-        # Set labels
         plt.xlabel('Date')
         plt.ylabel('Price')
-
-        # Set title
         plt.title(f'Price Across Dates for {self.ticker} (2013)')
-
         # Customize x-ticks: Show only every nth date to avoid overcrowding
         n_ticks = 10  # Adjust this to control the number of dates shown
         dates = backtest_results_sorted_zero_removed['date']
         plt.xticks(dates[::n_ticks], rotation=45)  # Show every nth date, rotated for readability
-
-        # Show legend
         plt.legend()
-
-        # Adjust layout to prevent label overlap
         plt.tight_layout()
-
-        # Save the figure
         plt.savefig('output/backtesting/price_vs_date_plot.png')
-
-        # Show the plot
         plt.show()
-
-        # Close the plot
         plt.close()
         # display(backtest_results)
         return backtest_results
@@ -772,51 +758,5 @@ if __name__ == "__main__":
 # file_path = 'backtesting-data/Optiondataorg/AAPL_2013.csv'
 
 # backtest_results = option.backtest(file_path, n_each_day = 1, keep_first_n_rows_per_date=True)
-
-# %%
-# import matplotlib.pyplot as plt
-# import matplotlib.ticker as mticker
-# import pandas as pd
-
-# # Sample data for demonstration (replace with your actual data)
-# backtest_results_sorted = {
-#     'strike': [100, 110, 120, 130, 140],
-#     'BS_error_pct': [0.1, 0.2, 0.4, 0.05, 0.003],
-#     'BT_error_pct': [0.15, 0.25, 0.35, 0.1, 0.02],
-# }
-
-# # Convert the sample data into a DataFrame if necessary
-# backtest_results_sorted = pd.DataFrame(backtest_results_sorted)
-
-# # 4. Line Plot of Percentage Errors vs. Strike Price
-# plt.figure(figsize=(12, 6))
-# plt.plot(backtest_results_sorted['strike'], backtest_results_sorted['BS_error_pct'], 
-#          label='Black-Scholes Error %', marker='o', color='blue', linestyle='-')
-# plt.plot(backtest_results_sorted['strike'], backtest_results_sorted['BT_error_pct'], 
-#          label='Binomial Tree Error %', marker='o', color='black', linestyle='--')
-
-# plt.xlabel('Strike Price')
-# plt.ylabel('Error (%) [Log Scale]')
-
-# # Set the y-scale to logarithmic
-# plt.yscale('log')
-
-# # Customize y-ticks for better readability
-# # The actual values you want to display
-# log_values = [0.001, 0.01, 0.1, 1]  # Example values, adjust as needed
-# plt.yticks(log_values)  # Set ticks to specific log values
-
-# # Format the y-ticks to show decimals instead of scientific notation
-# formatter = mticker.FormatStrFormatter('%.2f')  # Display as two decimal places
-# plt.gca().yaxis.set_major_formatter(formatter)
-
-# # plt.title(f'Percentage Error vs. Strike Price for {self.ticker} (2013)')
-# plt.xticks(rotation=45)
-# plt.legend()
-# plt.tight_layout()
-# plt.savefig('output/backtesting/percentage_error_vs_strike_plot.png')
-# plt.show()  # Display the plot
-# plt.close()
-
 
 
