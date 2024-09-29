@@ -58,7 +58,7 @@ def app():
         K = st.number_input("Strike price:", value=207.5)
         days_to_maturity = st.number_input("Days to expiration:", value=7)
         # rfr = st.number_input("Risk-free rate (%):", value=5)
-        rfr = st.number_input("Risk-free rate (%)", help="Annualised value.")
+        rfr = st.number_input("Risk-free rate (%):", value=5, help="Annualised value.")
         market_price = st.number_input("Market price of the option:", value=22.25)
       
 
