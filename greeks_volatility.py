@@ -31,7 +31,7 @@ class GreeksVolatility:
         self.output_folder = output_folder
         self.sigma = None  # Volatility
 
-    def _greeks(self, q=0):
+    def _greeks(self, sigma, q=0):
         """
         Calculate the Greeks for the option.
 
@@ -46,21 +46,22 @@ class GreeksVolatility:
         Returns:
             tuple: Delta, Gamma, Vega, Theta, and Rho.
         """
-        d1 = (np.log(self.S / self.K) + (self.r - q + 0.5 * self.sigma ** 2) * self.T) / (self.sigma * np.sqrt(self.T))
-        d2 = d1 - self.sigma * np.sqrt(self.T)
+
+        d1 = (np.log(self.S / self.K) + (self.r - q + 0.5 * sigma ** 2) * self.T) / (sigma * np.sqrt(self.T))
+        d2 = d1 - sigma * np.sqrt(self.T)
 
         if self.option_type == "call":
             delta = norm.cdf(d1)
-            theta = (- (self.S * np.exp(-q * self.T) * norm.pdf(d1) * self.sigma) / (2 * np.sqrt(self.T)) -
+            theta = (- (self.S * np.exp(-q * self.T) * norm.pdf(d1) * sigma) / (2 * np.sqrt(self.T)) -
                      self.r * self.K * np.exp(-self.r * self.T) * norm.cdf(d2))
             rho = self.K * self.T * np.exp(-self.r * self.T) * norm.cdf(d2)
         else:
             delta = norm.cdf(d1) - 1
-            theta = (- (self.S * np.exp(-q * self.T) * norm.pdf(d1) * self.sigma) / (2 * np.sqrt(self.T)) +
+            theta = (- (self.S * np.exp(-q * self.T) * norm.pdf(d1) * sigma) / (2 * np.sqrt(self.T)) +
                      self.r * self.K * np.exp(-self.r * self.T) * norm.cdf(-d2))
             rho = -self.K * self.T * np.exp(-self.r * self.T) * norm.cdf(-d2)
 
-        gamma = norm.pdf(d1) / (self.S * self.sigma * np.sqrt(self.T))
+        gamma = norm.pdf(d1) / (self.S * sigma * np.sqrt(self.T))
         vega = self.S * np.exp(-q * self.T) * norm.pdf(d1) * np.sqrt(self.T)
 
         return delta, gamma, vega, theta, rho
@@ -122,7 +123,7 @@ class GreeksVolatility:
 
             option_pricing = OptionPricingModels(self.S, self.K, self.T, self.r, sigma, self.option_type)
             price = option_pricing.black_scholes_option()
-            vega = self._greeks()[2]
+            vega = self._greeks(sigma)[2]
             price_diff = price - self.market_price
             # print('price',price, vega, price_diff)
             # print(self.option_type)
@@ -207,34 +208,34 @@ class GreeksVolatility:
 
 
 
-    def calculate_historical_volatility(self, start_date, end_date, window=252):
-        """
-        Calculate the historical volatility based on stock price data.
+    # def calculate_historical_volatility(self, start_date, end_date, window=252):
+    #     """
+    #     Calculate the historical volatility based on stock price data.
 
-        Args:
-            start_date (str): Start date for the historical data in "YYYY-MM-DD" format.
-            end_date (str): End date for the historical data in "YYYY-MM-DD" format.
-            window (int): Rolling window for volatility calculation (default is 252 days).
+    #     Args:
+    #         start_date (str): Start date for the historical data in "YYYY-MM-DD" format.
+    #         end_date (str): End date for the historical data in "YYYY-MM-DD" format.
+    #         window (int): Rolling window for volatility calculation (default is 252 days).
 
-        Returns:
-            float: Annualised historical volatility.
-        """
-        try:
-            self.data = yf.download(self.ticker, start=start_date, end=end_date)
-            if self.data.empty:
-                raise ValueError("No data found for the given ticker.")
+    #     Returns:
+    #         float: Annualised historical volatility.
+    #     """
+    #     try:
+    #         data = yf.download(self.ticker, start=start_date, end=end_date)
+    #         if data.empty:
+    #             raise ValueError("No data found for the given ticker.")
             
-            if 'Adj Close' in self.data.columns and not self.data['Adj Close'].empty:
-                self.data['Returns'] = self.data['Adj Close'].pct_change()
-                historical_volatility = self.data['Returns'].std() * np.sqrt(252)  # Annualised volatility
-                self.sigma = historical_volatility  # Store volatility for use in other methods
-                return historical_volatility
-            else:
-                raise ValueError("Adjusted Close data is not available.")
+    #         if 'Adj Close' in data.columns and not data['Adj Close'].empty:
+    #             data['Returns'] = data['Adj Close'].pct_change()
+    #             historical_volatility = data['Returns'].std() * np.sqrt(252)  # Annualised volatility
+    #             sigma = historical_volatility  # Store volatility for use in other methods
+    #             return historical_volatility
+    #         else:
+    #             raise ValueError("Adjusted Close data is not available.")
             
-        except Exception as e:
-            print(f"Error fetching stock data: {e}")
-            return None
+    #     except Exception as e:
+    #         print(f"Error fetching stock data: {e}")
+    #         return None
         
        
        
