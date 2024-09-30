@@ -1,13 +1,12 @@
 import streamlit as st
-import time
-from datetime import datetime
-import os
-
 import numpy as np
 import yfinance as yf
+from datetime import datetime
+import os
 import matplotlib.pyplot as plt
+from option_pricing import OptionPricing 
+import time
 import plotly.graph_objects as go
-from greeks_volatility import GreeksVolatility
 
 
 # Streamlit app
@@ -87,13 +86,11 @@ def app():
     T = days_to_maturity / 365
     r = rfr/100.0
     # Initialise the OptionPricing class
-    # option_pricing = OptionPricing(ticker, option_type.lower())  # Pass the type as lowercase
-    greeks_volatility = GreeksVolatility(S, K, T, r, market_price, ticker, option_type, OUTPUT_FOLDER)
+    option_pricing = OptionPricing(ticker, option_type.lower())  # Pass the type as lowercase
 
     # Calculate historical volatility
-    sigma = greeks_volatility.calculate_historical_volatility(start_date.strftime('%Y-%m-%d'), 
+    sigma = option_pricing.calculate_historical_volatility(start_date.strftime('%Y-%m-%d'), 
                                                              end_date.strftime('%Y-%m-%d'))
-
 
     # Button to calculate all results
     if st.button("Calculate All Results 🚀"):
