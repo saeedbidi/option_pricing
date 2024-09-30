@@ -87,6 +87,9 @@ class OptionPricingModels():
         plot_filenames = []
 
         if output_folder:
+            # Create output folder if it doesn't exist
+            os.makedirs(output_folder, exist_ok=True)
+
             # Set common styling for plots
             plt.rcParams.update({
                 'font.size': 14,           # Font size
