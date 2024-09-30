@@ -129,12 +129,10 @@ def app():
 
 
             # # Calculate Binomial Tree price
-            bt_num_step = 100
-            bt_price = models.binomial_tree_option_price(bt_num_step)
+            bt_price = models.binomial_tree_option_price(N)
 
             # # Calculate Monte Carlo price
-            mc_num_sim = 10000
-            mc_price = models.monte_carlo_option_price(ticker=ticker, output_folder=OUTPUT_FOLDER, num_simulations=mc_num_sim)
+            mc_price = models.monte_carlo_option_price(ticker=ticker, output_folder=OUTPUT_FOLDER, num_simulations=num_simulations)
             # st.success("Calculation completed successfully! 🎉")
             with st.container():
                 st.success("Price Predictions (in USD):")
