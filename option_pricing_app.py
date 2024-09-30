@@ -1,7 +1,12 @@
+import sys
+import os
+
+# Add the src folder to the system path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), 'src')))
+
 import streamlit as st
 import time
 from datetime import datetime
-import os
 
 import numpy as np
 import yfinance as yf
