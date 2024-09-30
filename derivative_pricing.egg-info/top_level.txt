@@ -1,6 +1,0 @@
-backtesting-data
-build
-myenv
-old
-output
-output_streamlit

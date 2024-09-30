@@ -1,12 +1,17 @@
 import streamlit as st
-import numpy as np
-import yfinance as yf
+import time
 from datetime import datetime
 import os
+
+import numpy as np
+import yfinance as yf
 import matplotlib.pyplot as plt
-from option_pricing import OptionPricing 
-import time
 import plotly.graph_objects as go
+from data import DataHandler
+from models import OptionPricingModels
+from plots import OptionPlots
+from greeks_volatility import GreeksVolatility
+
 
 
 # Streamlit app
@@ -53,6 +58,7 @@ def app():
     with col1:
         ticker = st.text_input("Stock ticker:", "AAPL")
         option_type = st.radio("Option type:", ["Call", "Put"])
+        option_type = option_type.lower()
 
     with col2:
         K = st.number_input("Strike price:", value=207.5)
@@ -86,10 +92,14 @@ def app():
     T = days_to_maturity / 365
     r = rfr/100.0
     # Initialise the OptionPricing class
-    option_pricing = OptionPricing(ticker, option_type.lower())  # Pass the type as lowercase
-
+    # option_pricing = OptionPricing(ticker, option_type.lower())  # Pass the type as lowercase
+    
+    # Use DataHandler to fetch stock data
+    data_handler = DataHandler(ticker)
+    
     # Calculate historical volatility
-    sigma = option_pricing.calculate_historical_volatility(start_date.strftime('%Y-%m-%d'), 
+
+    sigma = data_handler.calculate_historical_volatility(start_date.strftime('%Y-%m-%d'), 
                                                              end_date.strftime('%Y-%m-%d'))
 
     # Button to calculate all results
@@ -100,33 +110,52 @@ def app():
         fetching_message = st.info("Fetching stock data and performing calculations, this might take a few moments...")
         
         # Fetch the current stock price
-        option_pricing.get_stock_data()
+        data_handler.get_stock_data()
         fetching_message.empty()
 
         computing_message = st.info("Models started! Please wait ...")
 
 
-        if option_pricing.S:
-            st.success(f"Current Stock Price: {option_pricing.S:.2f} (USD) according to the live Yahoo market data")
-            option_pricing.output_folder = "output_streamlit"
-            os.makedirs(option_pricing.output_folder, exist_ok=True)
-            
-            # Calculate prices using different models
-            bs_price = option_pricing.black_scholes_option(option_pricing.S, K, T, r, sigma, option_pricing.option_type.lower())
-            mc_price = option_pricing.monte_carlo_option_price(option_pricing.S, K, T, r, sigma, num_simulations,option_pricing.option_type.lower())
-            bt_price = option_pricing.binomial_tree_option_price(option_pricing.S, K, T, r, sigma, N, option_pricing.option_type.lower())
+        if data_handler.S:
+            st.success(f"Current Stock Price: {data_handler.S:.2f} (USD) according to the live Yahoo market data")
+            # option_pricing.output_folder = "output_streamlit"
+            # os.makedirs(option_pricing.output_folder, exist_ok=True)
+
+            OUTPUT_FOLDER = os.path.join("output","streamlit")
+            models = OptionPricingModels(data_handler.S, K, T, r, sigma, option_type)
+        
+            # # Calculate Black Scholes price
+            bs_price = models.black_scholes_option(q=0)
+
+
+            # # Calculate Binomial Tree price
+            bt_num_step = 100
+            bt_price = models.binomial_tree_option_price(bt_num_step)
+
+            # # Calculate Monte Carlo price
+            mc_num_sim = 10000
+            mc_price = models.monte_carlo_option_price(ticker=ticker, output_folder=OUTPUT_FOLDER, num_simulations=mc_num_sim)
+            # st.success("Calculation completed successfully! 🎉")
+            with st.container():
+                st.success("Price Predictions (in USD):")
+                st.markdown(f"&nbsp;&nbsp;&nbsp;&nbsp;**Black-Scholes Price:** {bs_price:.2f}")
+                st.markdown(f"&nbsp;&nbsp;&nbsp;&nbsp;**Monte Carlo Price:** {mc_price[0]:.2f}")
+                st.markdown(f"&nbsp;&nbsp;&nbsp;&nbsp;**Binomial Tree Price:** {bt_price:.2f}")
 
             # Generate the range of stock prices for plotting
-            # Generate the range of stock prices for plotting
-            S_range = np.linspace(option_pricing.S * 0.8, option_pricing.S * 1.2, 100)
+
+            S_range = np.linspace(data_handler.S * 0.8, data_handler.S * 1.2, 100)
             strike_prices = [K, K * 1.1, K * 0.9]  # List of different strike prices
             
             # Create a Plotly figure
             fig = go.Figure()
 
             # Calculate Black-Scholes prices for each strike price
+            # for K_strike in strike_prices:
+            #     bs_prices = [OptionPricingModels(data_handler.S, K, T, r, sigma, option_type).black_scholes_option(q=0) for S in S_range]
+            #     fig.add_trace(go.Scatter(x=S_range, y=bs_prices, mode='lines', name=f"Strike Price: {K_strike:.2f}"))
             for K_strike in strike_prices:
-                bs_prices = [option_pricing.black_scholes_option(s, K_strike, T, r, sigma, option_pricing.option_type.lower()) for s in S_range]
+                bs_prices = [OptionPricingModels(S, K_strike, T, r, sigma, option_type).black_scholes_option(q=0) for S in S_range]
                 fig.add_trace(go.Scatter(x=S_range, y=bs_prices, mode='lines', name=f"Strike Price: {K_strike:.2f}"))
 
             # Customize the layout
@@ -137,47 +166,36 @@ def app():
             st.plotly_chart(fig)
 
 
-
             # Generate comparative pricing plot
-            option_pricing.comparative_pricing_plot(bs_price, mc_price, bt_price)
+            plots = OptionPlots(option_type, ticker, OUTPUT_FOLDER)
+            plots.comparative_pricing_plot(bs_price, mc_price, bt_price)
 
             # Plot option prices vs stock price
-            S_range = np.linspace(option_pricing.S * 0.8, option_pricing.S * 1.2, 100)
-            K_list = [K, K * 1.1, K * 0.9]
-            option_pricing.plot_option_price_vs_stock_price(S_range, K_list, T, r, sigma)
-
+            plots.plot_option_price_vs_stock_price(data_handler.S, K, T, r, sigma)
+        
             # Calculate implied volatility
-            iv = option_pricing.implied_volatility(option_pricing.S, K, T, r, market_price)
-            # st.success("Calculation completed successfully! 🎉")
+            greeks_volatility = GreeksVolatility(data_handler.S, K, T, r, market_price, ticker, option_type, OUTPUT_FOLDER)
+            iv = greeks_volatility.implied_volatility()
 
-            # st.success(f"Black-Scholes Price Prediction: {bs_price:.2f}")
-            # st.success(f"Monte Carlo Price Prediction: {mc_price[0]:.2f}")
-            # st.success(f"Binomial Tree Price Prediction: {bt_price:.2f}")
-            
-            # Create a container for the price predictions
-            with st.container():
-                st.success("Price Predictions (in USD):")
-                st.markdown(f"&nbsp;&nbsp;&nbsp;&nbsp;**Black-Scholes Price:** {bs_price:.2f}")
-                st.markdown(f"&nbsp;&nbsp;&nbsp;&nbsp;**Monte Carlo Price:** {mc_price[0]:.2f}")
-                st.markdown(f"&nbsp;&nbsp;&nbsp;&nbsp;**Binomial Tree Price:** {bt_price:.2f}")
+
 
             # After calculating bt_price, display the prediction
 
             if iv is not None:
                 st.success(f"Implied Volatility: {iv:.2%}")
-            else:
-                st.error("Could not calculate implied volatility.")
+            # else:
+            #     st.error("Could not calculate implied volatility.")
         
 
             # Display plots
             # if os.path.exists(os.path.join(option_pricing.output_folder, 'Convergence_Plot.png')):
             #     st.image(os.path.join(option_pricing.output_folder, 'Option_price_vs_stock_price.png'))
-            if os.path.exists(os.path.join(option_pricing.output_folder, 'Monte_Carlo_Paths.png')):
-                st.image(os.path.join(option_pricing.output_folder, 'Monte_Carlo_Paths.png'))
-            if os.path.exists(os.path.join(option_pricing.output_folder, 'Payoff_Histogram.png')):
-                st.image(os.path.join(option_pricing.output_folder, 'Payoff_Histogram.png'))
-            if os.path.exists(os.path.join(option_pricing.output_folder, 'Convergence_Plot.png')):
-                st.image(os.path.join(option_pricing.output_folder, 'Convergence_Plot.png'))
+            # if os.path.exists(os.path.join(OUTPUT_FOLDER, 'Monte_Carlo_Paths.png')):
+            #     st.image(os.path.join(OUTPUT_FOLDER, 'Monte_Carlo_Paths.png'))
+            if os.path.exists(os.path.join(OUTPUT_FOLDER, 'Payoff_Histogram.png')):
+                st.image(os.path.join(OUTPUT_FOLDER, 'Payoff_Histogram.png'))
+            if os.path.exists(os.path.join(OUTPUT_FOLDER, 'Convergence_Plot.png')):
+                st.image(os.path.join(OUTPUT_FOLDER, 'Convergence_Plot.png'))
             # if os.path.exists(os.path.join(option_pricing.output_folder, 'Pricing_Comparison.png')):
             #     st.image(os.path.join(option_pricing.output_folder, 'Pricing_Comparison.png'))
  
