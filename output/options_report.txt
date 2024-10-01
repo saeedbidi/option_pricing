@@ -3,30 +3,30 @@
 
         1. User Inputs:
         - Option type: call
-        - Stock Ticker: AAPL
-        - Stock Price (S): 233.0
-        - Strike Price (K): 207.5
-        - Days to Expiration: 10 days
+        - Stock Ticker: ABNB
+        - Stock Price (S): 126.8
+        - Strike Price (K): 118
+        - Days to Expiration: 4 days
         - Risk-Free Rate (r): 5.00%
-        - Market Price of the Option: 22.25
-        - Start and end date for calculating Historical Volatility: 2023-01-01 - 2024-09-30
+        - Market Price of the Option: 11.8
+        - Start and end date for calculating Historical Volatility: 2023-01-01 - 2024-10-01
 
         2. Calculated Intermediate Values:
-        - Time to Maturity (T): 0.0274 years
-        - Historical Volatility (σ): 21.82%
+        - Time to Maturity (T): 0.0110 years
+        - Historical Volatility (σ): 38.92%
 
         3. Option Prices:
-        - Option Price (Black-Scholes): 25.79 
-        - Option Price (Monte Carlo): 25.61
-        - Option Price (Binomial Tree): 25.79 
+        - Option Price (Black-Scholes): 8.95 
+        - Option Price (Monte Carlo): 9.19
+        - Option Price (Binomial Tree): 8.95 
 
         4. Greeks:
-        - Delta: 0.9995
-        - Gamma: 0.0002
-        - Vega: 0.0743
-        - Theta: -10.6502
-        - Rho: 5.6736
+        - Delta: 0.9641
+        - Gamma: 0.0153
+        - Vega: 1.0463
+        - Theta: -24.2461
+        - Rho: 1.2418
 
         5. Implied Volatility Calculation:
-        - Implied Volatility (IV): Not found (check the imported market price)
+        - Implied Volatility (IV): 125.55%
         

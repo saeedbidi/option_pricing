@@ -1,3 +1,9 @@
+import sys
+import os
+
+# Add the src folder to the system path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), 'src')))
+
 import streamlit as st
 import time
 from datetime import datetime
@@ -118,10 +124,10 @@ def app():
 
         if data_handler.S:
             st.success(f"Current Stock Price: {data_handler.S:.2f} (USD) according to the live Yahoo market data")
-            # option_pricing.output_folder = "output_streamlit"
-            # os.makedirs(option_pricing.output_folder, exist_ok=True)
+            # Create output directories
+            # current_dir = os.getcwd()
 
-            OUTPUT_FOLDER = os.path.join("output","streamlit")
+            OUTPUT_FOLDER = os.path.join('output', 'streamlit')
             models = OptionPricingModels(data_handler.S, K, T, r, sigma, option_type)
         
             # # Calculate Black Scholes price

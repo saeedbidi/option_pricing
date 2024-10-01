@@ -84,7 +84,9 @@ class Backtester:
         print(f'Monte Carlo MAE: {mae_mc}, RMSE: {rmse_mc}')
 
         # Create output directories
-        backtest_folder = os.path.join(self.output_folder, 'backtesting')
+        current_dir = os.getcwd()
+
+        backtest_folder = os.path.join(os.path.dirname(current_dir), 'backtesting')
         os.makedirs(backtest_folder, exist_ok=True)
 
         # Save results to output folder
