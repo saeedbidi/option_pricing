@@ -31,6 +31,8 @@ def app():
 
     st.title("Option Pricing Models 📊")
     # st.subsubheader("Contact: saeed.bidi@qmul.ac.uk 📧",)
+    st.markdown("""
+    **Developed by Saeed Bidi, PhD**""")  
     st.markdown("<span style='font-size: 0.9em;'>✉️ saeed.bidi@qmul.ac.uk</span>", unsafe_allow_html=True)
 
     # Description of the app and models
@@ -212,14 +214,13 @@ def app():
     
     st.markdown("---")
     st.markdown("""
-    **Developed by Saeed Bidi, PhD**  
     [My LinkedIn](https://www.linkedin.com/in/saeed-bidi/)
                 
     [GitHub Repository](https://github.com/saeedbidi/option_pricing)
     
-    I designed this app to help you model the pricing of options using various financial models.
+    I designed this app to model the pricing of options using various financial models.
                 
-    Machine learning algorithms are also imelemented for conducting backtesting. Here is an example for AAPL option:
+    **Machine learning** algorithms are also imelemented for conducting backtesting. Here is an example for AAPL option:
     """)
     # Use os.path.join to ensure the correct path is used
     image_path = os.path.join(os.getcwd(), 'output', 'backtesting', 'Backtesting_price_vs_date_plot.png')
