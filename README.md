@@ -108,7 +108,7 @@ The script will generate the following output:
 ![Convergence_Plot](output/Convergence_Plot.png)
 
 #### **Backtesting Options Pricing Models: Apple Inc. (2013)**
-![alt text](output/backtesting/Backtesting_mid_price_vs_model_prices.png)
+<!-- ![alt text](output/backtesting/Backtesting_mid_price_vs_model_prices.png) -->
 ![alt text](output/backtesting/Backtesting_price_vs_date_plot.png)
 
 ## 📂 **Project Structure**
