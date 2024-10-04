@@ -13,5 +13,5 @@ setup(
     author="Saeed Bidi",
     author_email="saeed.bidi@qmul.ac.uk",
     python_requires=">=3.8",
-    install_requires=["numpy", "yfinance", "scipy", "matplotlib", "streamlit", "seaborn", "plotly", "sklearn"],
+    install_requires=["numpy", "yfinance", "scipy", "matplotlib", "streamlit", "seaborn", "plotly", "scikit-learn"],
 )
