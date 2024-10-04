@@ -217,8 +217,17 @@ def app():
                 
     [GitHub Repository](https://github.com/saeedbidi/option_pricing)
     
-    I designed this app to help you model the pricing of options using various financial models.
-    The content and calculations provided are for educational purposes and should not be used for actual trading without further research.
+    I designed this app to help you model the pricing of options using various financial models. Machine learning algorithms are also imelemented
+                for conducting backtesting. Here is an example for AAPL option:
+    """)
+    # Use os.path.join to ensure the correct path is used
+    image_path = os.path.join(os.getcwd(), 'output', 'backtesting', 'Backtesting_price_vs_date_plot.png')
+
+    # Display the image
+    st.image(image_path, use_column_width=True)
+    
+    st.markdown("""
+        The content and calculations provided are for educational purposes and should not be used for actual trading without further research.
     """)
 
 # Streamlit call

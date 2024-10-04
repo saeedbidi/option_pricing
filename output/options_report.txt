@@ -4,7 +4,7 @@
         1. User Inputs:
         - Option type: call
         - Stock Ticker: AAPL
-        - Stock Price (S): 225.7
+        - Stock Price (S): 224.9
         - Strike Price (K): 207.5
         - Days to Expiration: 10 days
         - Risk-Free Rate (r): 5.00%
@@ -16,17 +16,17 @@
         - Historical Volatility (σ): 21.90%
 
         3. Option Prices:
-        - Option Price (Black-Scholes): 18.48 
-        - Option Price (Monte Carlo): 18.44
-        - Option Price (Binomial Tree): 18.48 
+        - Option Price (Black-Scholes): 17.75 
+        - Option Price (Monte Carlo): 17.80
+        - Option Price (Binomial Tree): 17.75 
 
         4. Greeks:
-        - Delta: 0.9911
-        - Gamma: 0.0029
-        - Vega: 0.8962
-        - Theta: -13.8420
-        - Rho: 5.6217
+        - Delta: 0.9887
+        - Gamma: 0.0036
+        - Vega: 1.1012
+        - Theta: -14.6346
+        - Rho: 5.6068
 
         5. Implied Volatility Calculation:
-        - Implied Volatility (IV): 73.94%
+        - Implied Volatility (IV): 78.86%
         

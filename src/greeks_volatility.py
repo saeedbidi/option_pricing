@@ -9,7 +9,7 @@ from models import OptionPricingModels
 class GreeksVolatility:
     def __init__(self, S, K, T, r, market_price, ticker, option_type, output_folder='output'):
         """
-        Initializes the Greeks and volatility calculation class.
+        Initialises the Greeks and volatility calculation class.
 
         Args:
             S (float): Current stock price.
@@ -21,7 +21,7 @@ class GreeksVolatility:
             option_type (str): Option type ('call' or 'put').
             output_folder (str): Directory to save output files.
         """
-        self.S = S  # Ensure S (current stock price) is assigned here
+        self.S = S 
         self.K = K
         self.T = T
         self.r = r
@@ -83,7 +83,7 @@ class GreeksVolatility:
             """
         try:
             sigma = self.implied_volatility_newton()
-            if sigma is None:  # Check if sigma is None
+            if sigma is None:
                 raise ValueError("Newton-Raphson method returned None for sigma.")
             print('implied volatility = ', sigma)
             return sigma
@@ -116,17 +116,14 @@ class GreeksVolatility:
             float: Implied volatility.
         """
         sigma = self.sigma if self.sigma is not None else 0.2  # Fallback if historical volatility is not calculated
-        # print('newton',S, K, T, r, market_price)
-        # for _ in range(max_iterations):
-        #     print('saeeddddd')
+
         for _ in range(max_iterations):
 
             option_pricing = OptionPricingModels(self.S, self.K, self.T, self.r, sigma, self.option_type)
             price = option_pricing.black_scholes_option()
             vega = self._greeks(sigma)[2]
             price_diff = price - self.market_price
-            # print('price',price, vega, price_diff)
-            # print(self.option_type)
+
 
             if abs(price_diff) < tolerance:
                 print(f"Newton-Raphson method converged! sigma = {sigma}")
@@ -136,13 +133,9 @@ class GreeksVolatility:
                 raise ValueError("Vega is zero, cannot update volatility.")
 
             delta_sigma = relaxation_factor * (price_diff / vega)
-            # print(f"delta_sigma {delta_sigma} vega: {vega}")
             sigma -= delta_sigma
-            # print(f"sigma1 {sigma}")
             sigma = max(0.01, min(5.0, sigma))  # Limit sigma
-            # print(f"sigma2 {sigma}")
         print(f"Newton-Raphson method failed to converge after {max_iterations} iterations. {sigma}")
-        # raise ValueError("Implied volatility not found within the iterations.")
     
 
     def implied_volatility_bisection(self, lower_bound=0.01, upper_bound=5.0, max_iterations=100, tolerance=1e-6):
@@ -205,40 +198,5 @@ class GreeksVolatility:
         
         implied_vol = brentq(option_price_diff, low, high)
         return implied_vol
-
-
-
-    # def calculate_historical_volatility(self, start_date, end_date, window=252):
-    #     """
-    #     Calculate the historical volatility based on stock price data.
-
-    #     Args:
-    #         start_date (str): Start date for the historical data in "YYYY-MM-DD" format.
-    #         end_date (str): End date for the historical data in "YYYY-MM-DD" format.
-    #         window (int): Rolling window for volatility calculation (default is 252 days).
-
-    #     Returns:
-    #         float: Annualised historical volatility.
-    #     """
-    #     try:
-    #         data = yf.download(self.ticker, start=start_date, end=end_date)
-    #         if data.empty:
-    #             raise ValueError("No data found for the given ticker.")
-            
-    #         if 'Adj Close' in data.columns and not data['Adj Close'].empty:
-    #             data['Returns'] = data['Adj Close'].pct_change()
-    #             historical_volatility = data['Returns'].std() * np.sqrt(252)  # Annualised volatility
-    #             sigma = historical_volatility  # Store volatility for use in other methods
-    #             return historical_volatility
-    #         else:
-    #             raise ValueError("Adjusted Close data is not available.")
-            
-    #     except Exception as e:
-    #         print(f"Error fetching stock data: {e}")
-    #         return None
-        
-       
-       
-
 
     
