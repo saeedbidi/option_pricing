@@ -35,8 +35,8 @@ def app():
 
     # Description of the app and models
     st.markdown("""
-    Welcome to the **Option Pricing Models** app. This tool allows you to calculate option prices 
-    using various financial models such as the Black-Scholes model, Monte Carlo simulations, and Binomial Tree models.
+    Welcome to my **Option Pricing Models** app. This tool allows you to calculate option prices 
+    using various financial models such as Monte Carlo, Black-Scholes, and Binomial Tree models.
     
     You can enter key inputs like the stock ticker, strike price, risk-free rate, and time to maturity. 
     The app will also calculate implied volatility and provide you with a comparison between different pricing models.
@@ -217,8 +217,9 @@ def app():
                 
     [GitHub Repository](https://github.com/saeedbidi/option_pricing)
     
-    I designed this app to help you model the pricing of options using various financial models. Machine learning algorithms are also imelemented
-                for conducting backtesting. Here is an example for AAPL option:
+    I designed this app to help you model the pricing of options using various financial models.
+                
+    Machine learning algorithms are also imelemented for conducting backtesting. Here is an example for AAPL option:
     """)
     # Use os.path.join to ensure the correct path is used
     image_path = os.path.join(os.getcwd(), 'output', 'backtesting', 'Backtesting_price_vs_date_plot.png')
