@@ -66,5 +66,3 @@ class ResultsHandler:
             file.write(report)
 
         print("Report saved to options_report.txt")
-
-    # You can add more result-related methods here

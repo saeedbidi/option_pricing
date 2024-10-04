@@ -16,9 +16,9 @@ class OptionPlots:
         K_list = [K, K * 1.1, K * 0.9]
         # Set common styling for plots
         plt.rcParams.update({
-            'font.size': 14,           # Font size
-            'lines.linewidth': 2,      # Line width
-            'figure.dpi': 300          # Image quality
+            'font.size': 14,           
+            'lines.linewidth': 2,      
+            'figure.dpi': 300         
         })
         plt.figure(figsize=(12, 6))
         for K in K_list:
@@ -39,9 +39,9 @@ class OptionPlots:
         prices = [bs_price, mc_price[0], bt_price]
         # Set common styling for plots
         plt.rcParams.update({
-            'font.size': 14,           # Font size
-            'lines.linewidth': 2,      # Line width
-            'figure.dpi': 300          # Image quality
+            'font.size': 14,           
+            'lines.linewidth': 2,      
+            'figure.dpi': 300          
         })
         plt.figure(figsize=(12, 6))
         plt.bar(methods, prices, color=['blue', 'red', 'black'])

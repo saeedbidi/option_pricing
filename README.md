@@ -6,29 +6,36 @@
 📢 This app is now released and deployed at: https://saeed-option-pricing.streamlit.app/
 
 
-🚀 I am excited to share my project focusing on pricing options. I implemented the **Black-Scholes model**, **Monte Carlo simulations**, and the **Binomial Tree method** for pricing options. I am further developing the project by adding backtesting, a machine learning model, and deploying the app.
+🚀 I am excited to share my project focusing on pricing options. I implemented the following models:
+1. **Machine Learning Regression models (e.g., XGboost and Random Forest)**,
+2. **Monte Carlo simulations**,
+3. **Black-Scholes model**,
+4. **Binomial Tree method**
 
-👨🏻‍💻 About me: I believe in hands-on learning. As a Senior Data Scientist with a PhD in Computational Physics, I have a strong foundation in analytical thinking and complex problem-solving. Through hands-on work in finance, I am leveraging my data science skills to gain practical experience and build a robust understanding of financial systems.
+and performed backtesting. I am developing the project further.
+
+👨🏻‍💻 **About me**: I believe in hands-on learning. As a Senior Data Scientist with a PhD in Computational Physics, I have a strong foundation in analytical thinking and complex problem-solving. Through hands-on work in finance, I am leveraging my data science skills to gain practical experience and build a robust understanding of financial systems.
 ###### **Contact [my LinkedIn](https://www.linkedin.com/in/saeed-bidi/) 👨🏻‍💻**
 
 
 
-##  💰 **Option Pricing Model with Black-Scholes, Monte Carlo and Binomial Tree Methods**
+##  💰 **Option Pricing Model with Machine Learning, Monte Carlo , Black-Scholes and Binomial Tree Methods**
 
-In this project,  **Black-Scholes model**, **Monte Carlo simulations**, and the **Binomial Tree method** are vital tools in financial markets for pricing options. Each method offers a distinct approach to estimating the price of call and put options, relying on parameters such as stock price, strike price, time to maturity, risk-free rate, and volatility. I conducted **backtesting** using Apple Inc. (AAPL) stock data from the year 2013, sourced from https://optiondata.org/. Real-world stock data is fetched via the **Yahoo Finance API** to compute option prices, historical volatility, and option sensitivities (the Greeks). The project also provides visualisations and comparisons of option prices using all three methods. 
+Each method offers a distinct approach to estimating the price of call and put options, relying on parameters such as stock price, strike price, time to maturity, risk-free rate, and volatility. I conducted **backtesting** using Apple Inc. (AAPL) stock data from the year 2013, sourced from https://optiondata.org/. Real-world stock data is fetched via the **Yahoo Finance API** to compute option prices, historical volatility, and option sensitivities (the Greeks). The project also provides visualisations and comparisons of option prices using all three methods. 
 
 ### **Features**
 - Fetches **real-time stock data** (e.g., Apple stock) using `yfinance`.
 - Computes option prices for **call and put options** using:
-  - **Black-Scholes**
+  - **Machine Learning**
   - **Monte Carlo**
+  - **Black-Scholes**
   - **Binomial Tree**
 - **Backtesting**
 - Calculates **historical volatility** based on daily returns.
 - Computes the **Greeks**: **Delta**, **Gamma**, **Vega**, **Theta**, and **Rho**.
 - Calculates **Implied Volatility** based on market prices.
 - Provides visualisations showing how option prices vary with stock price for **both calls and puts**.
-- **Compares** pricing results from the three methods.
+- **Compares** pricing results from the different methods.
 
 ###  📝 **Inputs**
 
@@ -43,11 +50,11 @@ In this project,  **Black-Scholes model**, **Monte Carlo simulations**, and the 
 
 The script will generate the following output:
 - **options_report.txt**: a report file containing:
-  - **Call and Put Option Prices** using **Black-Scholes**, **Monte Carlo**, and **Binomial Tree** methods.
+  - **Call and Put Option Prices** using different methods,
   - **Greeks** and **implied volatility**.
 
 - **Plots containing:**
-  - **Comparing the predictions by different models**
+  - **Comparing the predictions by different methods**
   - **Option price vs stock price (using Black Scholes model)**
   - **Monte Carlo payoff histogram**
   - **Monte Carlo convergence plot**
@@ -101,18 +108,21 @@ The script will generate the following output:
 ![Convergence_Plot](output/Convergence_Plot.png)
 
 #### **Backtesting Options Pricing Models: Apple Inc. (2013)**
-![alt text](output/backtesting/mid_price_vs_model_prices.png)
-![alt text](output/backtesting/price_vs_date_plot.png)
+![alt text](output/backtesting/Backtesting_mid_price_vs_model_prices.png)
+![alt text](output/backtesting/Backtesting_price_vs_date_plot.png)
 
 ## 📂 **Project Structure**
 
 ```
 .
-├── option_pricing.py        # Main Python script for the project
-├── option_pricing_app.py    # Streamlit app
-├── setup.py        # Setup Python script to install the required libraries
-├── README.md                        # This README file
-├── output                       # Output folder containing the reports and plots
+├── README.md                   # All data added
+├── option_pricing_app.py       # Streamlit app
+├── output                      # Output folder containing the reports and plots
+├── requirements.txt            # Required libraries for the project
+├── setup.py                    # Setup Python script to install the required libraries
+└── output                         # Source folder
+    ├── streamlit               # Streamlit output
+    └── backtesting               # Backtesting output
 ```
 
 ## ⚙️ **Customisation**
@@ -130,7 +140,7 @@ You can customise this project by:
 ```bash
 python setup.py install
 ```
-3. Execute the Python code `option_pricing.py` or the Jupyter Notebook script `option_pricing.ipynb`.
+3. Execute the Python code `main.py` or the Jupyter Notebook script `main.ipynb`.
 
 
 ### **Parameters**
@@ -145,30 +155,7 @@ You can modify the following parameters in the script:
 
 ##  📖 **Code Explanation**
 
-### **1. Black-Scholes Model**
-The **Black-Scholes model** gives a closed-form solution for pricing call and put options, based on the assumption that stock prices follow a geometric Brownian motion.
-
-#### **Formula**
-For call options:
-```math
-C = S \cdot N(d_1) - K \cdot e^{-rT} \cdot N(d_2).
-```
-
-For put options:
-```math
-P = K \cdot e^{-rT} \cdot N(-d_2) - S \cdot N(-d_1),
-```
-where:
-
-```math
-d_1 = \frac{\ln(S/K) + (r + \sigma^2/2)T}{\sigma \sqrt{T}}, 
-```
-
-```math
- d_2 = d_1 - \sigma \sqrt{T}.
-```
-
-### **2. Monte Carlo Simulations**
+### **1. Monte Carlo Simulations**
 
 Monte Carlo simulation is used to estimate the price of options by simulating the future stock price paths and calculating the corresponding option payoffs. The method relies on **Geometric Brownian Motion (GBM)**, which models stock price evolution as:
 
@@ -200,6 +187,28 @@ where $T$ is the time to expiration in years.
 
 This approach is flexible and can handle a wide variety of option types though it requires many simulations for accuracy.
 
+### **2. Black-Scholes Model**
+The **Black-Scholes model** gives a closed-form solution for pricing call and put options, based on the assumption that stock prices follow a geometric Brownian motion.
+
+#### **Formula**
+For call options:
+```math
+C = S \cdot N(d_1) - K \cdot e^{-rT} \cdot N(d_2).
+```
+
+For put options:
+```math
+P = K \cdot e^{-rT} \cdot N(-d_2) - S \cdot N(-d_1),
+```
+where:
+
+```math
+d_1 = \frac{\ln(S/K) + (r + \sigma^2/2)T}{\sigma \sqrt{T}}, 
+```
+
+```math
+ d_2 = d_1 - \sigma \sqrt{T}.
+```
 
 ### **3. Binomial Tree Method**
 The Binomial Tree method approximates option prices by constructing a tree of possible future stock prices, calculating option prices by working backwards from the terminal nodes.
