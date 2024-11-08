@@ -1,8 +1,9 @@
-numpy
-yfinance
-scipy
-matplotlib
-streamlit
-plotly
-seaborn
-scikit-learn
+matplotlib==3.9.2
+matplotlib-inline==0.1.7
+numpy==2.1.1
+plotly==5.24.1
+scikit-learn==1.5.2
+scipy==1.14.1
+seaborn==0.13.2
+streamlit==1.38.0
+yfinance==0.2.43
