@@ -7,21 +7,28 @@ class DataHandler:
         self.data = None
         self.S = None
 
+    def _flatten_columns(self, df):
+        # yfinance >= 0.2.x returns MultiIndex columns even for single tickers
+        if hasattr(df.columns, 'levels'):
+            df.columns = df.columns.get_level_values(0)
+        return df
+
     def get_stock_data(self):
         """
         Fetch stock data from Yahoo Finance.
         """
         try:
-            # Fetch data for a short period to get the latest price
-            self.data = yf.download(self.ticker, period="1d")
+            self.data = yf.download(self.ticker, period="1d", auto_adjust=True, progress=False)
             if self.data.empty:
                 raise ValueError("No data found for the given ticker.")
-            
-            if 'Adj Close' in self.data.columns and not self.data['Adj Close'].empty:
-                self.S = self.data['Adj Close'].iloc[-1]
+
+            self.data = self._flatten_columns(self.data)
+
+            if 'Close' in self.data.columns and not self.data['Close'].empty:
+                self.S = float(self.data['Close'].iloc[-1])
                 print('Current Stock Price:', self.S)
             else:
-                raise ValueError("Adjusted Close data is not available.")
+                raise ValueError("Close data is not available.")
 
         except Exception as e:
             print(f"Error fetching stock data: {e}")
@@ -40,18 +47,19 @@ class DataHandler:
             float: Annualised historical volatility.
         """
         try:
-            self.data = yf.download(self.ticker, start=start_date, end=end_date)
+            self.data = yf.download(self.ticker, start=start_date, end=end_date, auto_adjust=True, progress=False)
             if self.data.empty:
                 raise ValueError("No data found for the given ticker.")
-            
-            if 'Adj Close' in self.data.columns and not self.data['Adj Close'].empty:
-                self.data['Returns'] = self.data['Adj Close'].pct_change()
+
+            self.data = self._flatten_columns(self.data)
+
+            if 'Close' in self.data.columns and not self.data['Close'].empty:
+                self.data['Returns'] = self.data['Close'].pct_change()
                 historical_volatility = self.data['Returns'].std() * np.sqrt(252)  # Annualised volatility
-                sigma = historical_volatility  # Store volatility for use in other methods
                 return historical_volatility
             else:
-                raise ValueError("Adjusted Close data is not available.")
-            
+                raise ValueError("Close data is not available.")
+
         except Exception as e:
             print(f"Error fetching stock data: {e}")
             return None

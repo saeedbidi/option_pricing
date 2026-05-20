@@ -135,14 +135,47 @@ You can customise this project by:
 
 ##  🎓 **How to Run the Project**
 
-1. Clone the repository.
-2. Install the following Python setup file including the necessary libraries:
+### Running the Streamlit app locally
+
+> **Python version:** Use Python 3.11, 3.12, or 3.13. Python 3.14+ may lack pre-built wheels for some dependencies and can cause installation failures.
+
+1. Clone the repository:
 
 ```bash
-python setup.py install
+git clone https://github.com/saeedbidi/option_pricing.git
+cd option_pricing
 ```
-3. Execute the Python code `main.py` or the Jupyter Notebook script `main.ipynb`.
 
+2. Create and activate a virtual environment:
+
+```bash
+python3.12 -m venv venv          # or python3.11 / python3.13
+source venv/bin/activate          # macOS/Linux
+# venv\Scripts\activate           # Windows
+```
+
+3. Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+> The `requirements.txt` uses minimum version constraints (`>=`) so pip always resolves the latest compatible wheels for your Python version. This also ensures `yfinance` stays up to date with Yahoo Finance API changes.
+
+4. Launch the app:
+
+```bash
+streamlit run option_pricing_app.py
+```
+
+The app will open automatically at **http://localhost:8501**.
+
+### Running the Python script / notebook
+
+```bash
+python src/main.py
+# or open src/main.ipynb in Jupyter
+```
 
 ### **Parameters**
 You can modify the following parameters in the script:

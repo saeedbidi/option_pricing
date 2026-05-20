@@ -11,7 +11,7 @@ setup(
     url="https://github.com/saeedbidi/option_pricing",
     description="pricing European call and put options using various models",
     author="Saeed Bidi",
-    author_email="saeed.bidi@qmul.ac.uk",
+    author_email="saeed.bidi77@gmail.com",
     python_requires=">=3.8",
     install_requires=[
         "numpy==2.1.1",

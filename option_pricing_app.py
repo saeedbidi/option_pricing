@@ -30,10 +30,10 @@ def app():
     )
 
     st.title("Option Pricing Models 📊")
-    # st.subsubheader("Contact: saeed.bidi@qmul.ac.uk 📧",)
+    # st.subsubheader("Contact: saeed.bidi77@gmail.com< 📧",)
     st.markdown("""
     **Developed by Saeed Bidi, PhD**""")  
-    st.markdown("<span style='font-size: 0.9em;'>✉️ saeed.bidi@qmul.ac.uk</span>", unsafe_allow_html=True)
+    st.markdown("<span style='font-size: 0.9em;'>✉️ saeed.bidi77@gmail.com</span>", unsafe_allow_html=True)
 
     # Description of the app and models
     st.markdown("""

@@ -1,9 +1,10 @@
 .DS_Store
-myenv/
+venv/
 backtest_data/
 build/
 Extra-inf.md
 old/
+.claude/
 backtesting-data/
 derivative_pricing.egg-info/
 __pycache__/
